@@ -30,23 +30,9 @@ The R [`SpatialData`](https://github.com/HelenaLC/SpatialData) package provides 
   [`anndataR`](https://bioconductor.org/packages//release/bioc/html/anndataR.html)
   [@anndataR2025].
 
-```{mermaid}
-%%| label: fig-spatialdata-layers
-%%| fig-cap: "Storage and reader path for each `SpatialData` element type. Images and labels are .zarr-backed; points and shapes are .parquet-backed; tables are `AnnData`/.zarr."
-flowchart LR
-  subgraph SD ["SpatialData object"]
-    direction TB
-    I["image / label"]
-    P["point / shape"]
-    T["table"]
-  end
-  I -- ".zarr" --> Rarr
-  P -- ".parquet / .geoparquet" --> duckspatial
-  T -- "AnnData (.zarr)" --> anndataR
-  Rarr --> R[("R / Bioconductor")]
-  duckspatial --> R
-  anndataR --> R
-```
+![Storage and reader path for each `SpatialData` element type. Images and labels are .zarr-backed; points and shapes are .parquet-backed; tables are `AnnData`/.zarr.](figures/team_interoperability/spatialdata-layers.png){#fig-spatialdata-layers width=85%}
+
+*Source: [figures/team_interoperability/spatialdata-layers.mmd](figures/team_interoperability/spatialdata-layers.mmd). Pre-rendered to PNG; see issue #26.*
 
 Because tabular information lands in `SingleCellExperiment`, interoperability with Bioconductor's existing single-cell infrastructure is preserved.
 The on-disk representations of the other components support efficient lazy access via `Rarr` and `duckspatial`.

@@ -1,0 +1,13 @@
+flowchart LR
+  subgraph SD ["SpatialData object"]
+    direction TB
+    I["image / label"]
+    P["point / shape"]
+    T["table"]
+  end
+  I -- ".zarr" --> Rarr
+  P -- ".parquet / .geoparquet" --> duckspatial
+  T -- "AnnData (.zarr)" --> anndataR
+  Rarr --> R[("R / Bioconductor")]
+  duckspatial --> R
+  anndataR --> R

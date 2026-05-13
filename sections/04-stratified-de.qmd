@@ -24,16 +24,9 @@ To recover confidence, we use a spatially smoothed meta-analysis: for each patch
 
 The full workflow chains five stages, summarized in @fig-stratified-de-pipeline: patches are defined from cell coordinates and the design variable; per-patch DE is run via Pearson residuals + simultaneous OLS; each patch is described by a "spatial-context" feature vector; per-patch results are stabilized by meta-analysis across nearest neighbors in that feature space; and the resulting patch × gene matrix is the substrate for downstream biological exploration.
 
-```{mermaid}
-%%| label: fig-stratified-de-pipeline
-%%| fig-cap: "Spatially stratified DE pipeline. Each box corresponds to one Methods subsection below."
-flowchart LR
-  A["Cell coords +<br/>design variable"] --> B["getPatches:<br/>iterative borders"]
-  B --> C["patchDE:<br/>Pearson resid + OLS"]
-  C --> D["Patch characteristics<br/>(expression / cell type / FM emb)"]
-  D --> E["Subgroup meta-analysis<br/>K nearest neighbors"]
-  E --> F[("Per-patch DE matrix<br/>(patches × genes)")]
-```
+![Spatially stratified DE pipeline. Each box corresponds to one Methods subsection below.](figures/team_analysis/stratified-de-pipeline.png){#fig-stratified-de-pipeline width=85%}
+
+*Source: [figures/team_analysis/stratified-de-pipeline.mmd](figures/team_analysis/stratified-de-pipeline.mmd). Pre-rendered to PNG; see issue #26.*
 
 ### Patch definition
 
