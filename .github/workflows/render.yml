@@ -55,15 +55,71 @@ jobs:
           echo "--- generated _version-banner.md ---"
           cat _version-banner.md
 
-      - name: Render HTML
-        run: quarto render --to html
+      - name: Diagnostics before render
+        shell: bash
+        run: |
+          set -euxo pipefail
+          echo "PWD: $(pwd)"
+          echo "Date: $(date -Iseconds)"
+          echo "Runner temp: ${RUNNER_TEMP}"
+          echo "GitHub SHA: ${GITHUB_SHA}"
+          echo "Quarto version:"
+          quarto --version
+          echo "Pandoc version:"
+          quarto pandoc --version || true
+          echo "TeX engine version:"
+          xelatex --version || pdflatex --version || true
+          echo "Repository files:"
+          ls -la
+          echo "Top-level qmd/yml files:"
+          find . -maxdepth 2 \( -name "*.qmd" -o -name "_quarto.yml" -o -name "*.bib" -o -name "*.csl" \) | sort
 
+      - name: Render HTML
+        shell: bash
+        run: |
+          set -euxo pipefail
+          echo "Starting HTML render at $(date -Iseconds)"
+          /usr/bin/time -v quarto render --to html --execute-debug 2>&1 | tee render-html.log
+          echo "Finished HTML render at $(date -Iseconds)"
 
       - name: Render PDF
-        run: quarto render --to pdf
+        shell: bash
+        run: |
+          set -euo pipefail
+          (
+            while true; do
+              echo "[heartbeat] PDF render still running at $(date -Iseconds)"
+              sleep 30
+            done
+          ) &
+          heartbeat_pid=$!
+
+          echo "Starting PDF render at $(date -Iseconds)"
+          /usr/bin/time -v quarto render --to pdf --execute-debug 2>&1 | tee render-pdf.log
+          status=${PIPESTATUS[0]}
+          echo "Finished PDF render at $(date -Iseconds)"
+
+          kill "${heartbeat_pid}" || true
+          wait "${heartbeat_pid}" 2>/dev/null || true
+          exit "${status}"
 
       - name: Render DOCX
-        run: quarto render --to docx
+        shell: bash
+        run: |
+          set -euxo pipefail
+          echo "Starting DOCX render at $(date -Iseconds)"
+          /usr/bin/time -v quarto render --to docx --execute-debug 2>&1 | tee render-docx.log
+          echo "Finished DOCX render at $(date -Iseconds)"
+
+      - name: Upload render logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-logs
+          path: |
+            render-html.log
+            render-pdf.log
+            render-docx.log
 
       # ----------------------------------------------------------------
       # Stage outputs for deployment.
@@ -134,7 +190,7 @@ jobs:
 
             | Version | HTML | PDF |
             |--------|------|-----|
-            | This PR (latest) | [`pr/${{ github.event.pull_request.number }}/`](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr/${{ github.event.pull_request.number }}/) | [`pr/${{ github.event.pull_request.number }}/manuscript.pdf`](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr/${{ github.event.pull_request.number }}/manuscript.pdf) |
+            | This PR (latest) | [`pr/${{ github.event.pull_request.number }}/`](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr/${{ github.event.pull_request.number }}/) | [PDF](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr/${{ github.event.pull_request.number }}/manuscript.pdf) |
             | This commit (`${{ github.event.pull_request.head.sha }}`) | [snapshot](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/v/${{ github.event.pull_request.head.sha }}/) | [PDF](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/v/${{ github.event.pull_request.head.sha }}/manuscript.pdf) |
             | Latest main | [latest](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/) | [PDF](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/manuscript.pdf) |
 
