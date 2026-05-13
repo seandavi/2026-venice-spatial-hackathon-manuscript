@@ -51,9 +51,9 @@ jobs:
             -e "s|__VERSION_URL__|${BASE}/v/${GITHUB_SHA}/|g" \
             -e "s|__VERSION_PDF__|${BASE}/v/${GITHUB_SHA}/manuscript.pdf|g" \
             -e "s|__VERSION_LATEST__|${BASE}/|g" \
-            _version-banner.md.template > _version-banner.md
-          echo "--- generated _version-banner.md ---"
-          cat _version-banner.md
+            _version-banner.html.template > _version-banner.html
+          echo "--- generated _version-banner.html ---"
+          cat _version-banner.html
 
       - name: Diagnostics before render
         shell: bash
