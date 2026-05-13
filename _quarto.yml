@@ -2,6 +2,10 @@ project:
   type: default
 
 bibliography: references.bib
+# Make sure pandoc can resolve figure paths from any include source.
+resource-path:
+  - .
+  - sections
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/nature.csl
 
 format:
