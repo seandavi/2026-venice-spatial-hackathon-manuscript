@@ -4,16 +4,22 @@ _freeze/
 .quarto/
 *_files/
 *_cache/
+**/*.quarto_ipynb
 
-# Rendered outputs (commit only when explicitly intended)
-index.html
-index.pdf
-index.docx
-*.tex
-*.aux
-*.log
-*.out
-*.toc
+# Rendered outputs anywhere in the tree (commit only when explicitly intended)
+**/*.html
+**/*.pdf
+**/*.docx
+**/*.tex
+**/*.aux
+**/*.log
+**/*.out
+**/*.toc
+
+# Some figures and references are legit PDFs/HTML downloads — these are
+# tracked explicitly even though they match the patterns above. Use:
+#   git add -f path/to/file.pdf
+# to override the ignore rule when adding a real artifact.
 
 # macOS
 .DS_Store
