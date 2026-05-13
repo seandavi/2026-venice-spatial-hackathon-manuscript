@@ -1,0 +1,104 @@
+name: Render manuscript
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Required so GITHUB_TOKEN can push to gh-pages and comment on PRs.
+permissions:
+  contents: write
+  pull-requests: write
+
+# Serialize all gh-pages writes so concurrent runs don't clobber each other.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+
+      - name: Render HTML
+        run: quarto render --to html
+
+      - name: Render PDF
+        run: quarto render --to pdf
+
+      # ----------------------------------------------------------------
+      # Stage outputs for deployment.
+      #
+      # Layout on gh-pages (mirrors the manubot pattern):
+      #
+      #   /                              latest main build (HTML + PDF)
+      #   /v/<commit-sha>/               permanent snapshot of every commit
+      #   /pr/<pr-number>/               live preview for an open PR
+      #
+      # `keep_files: true` on the deploy step preserves prior /v/* and /pr/*
+      # directories so old snapshots and other open PRs are never wiped.
+      # ----------------------------------------------------------------
+      - name: Stage per-commit snapshot
+        run: |
+          dest="public/v/${GITHUB_SHA}"
+          mkdir -p "$dest"
+          cp index.html "$dest/index.html"
+          cp index.pdf  "$dest/manuscript.pdf"
+
+      - name: Stage latest (push to main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p public
+          cp index.html public/index.html
+          cp index.pdf  public/manuscript.pdf
+
+      - name: Stage PR preview
+        if: github.event_name == 'pull_request'
+        run: |
+          dest="public/pr/${{ github.event.pull_request.number }}"
+          mkdir -p "$dest"
+          cp index.html "$dest/index.html"
+          cp index.pdf  "$dest/manuscript.pdf"
+
+      - name: Deploy to gh-pages
+        # Pulls from forks can't push to gh-pages with GITHUB_TOKEN — skip the
+        # deploy in that case but the render job above still validates the build.
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./public
+          keep_files: true
+          commit_message: |
+            Render ${{ github.event_name }} ${{ github.sha }}
+            ${{ github.event.head_commit.message || github.event.pull_request.title }}
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Comment on PR with preview links
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: manuscript-preview
+          message: |
+            ### 📄 Rendered preview
+
+            | Version | HTML | PDF |
+            |--------|------|-----|
+            | This PR (latest) | [`pr/${{ github.event.pull_request.number }}/`](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr/${{ github.event.pull_request.number }}/) | [`pr/${{ github.event.pull_request.number }}/manuscript.pdf`](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr/${{ github.event.pull_request.number }}/manuscript.pdf) |
+            | This commit (`${{ github.event.pull_request.head.sha }}`) | [snapshot](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/v/${{ github.event.pull_request.head.sha }}/) | [PDF](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/v/${{ github.event.pull_request.head.sha }}/manuscript.pdf) |
+            | Latest main | [latest](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/) | [PDF](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/manuscript.pdf) |
+
+            Snapshots are immutable. Latest links update on every push to `main`.
