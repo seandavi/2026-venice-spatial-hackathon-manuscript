@@ -1,0 +1,128 @@
+# Image and segmentation data manipulation and visualization {#sec-image-analysis}
+
+Source code: <https://github.com/drisso/segmentation-analysis>
+
+## Motivation
+
+Spatial omics and digital pathology have moved from low-plex imaging to
+gigapixel whole-slide datasets. These datasets typically pair multi-gigabyte
+whole-slide images (WSIs) with segmentation masks identifying hundreds of
+thousands to millions of nuclei or cell boundaries.
+
+We focus on classical pathology images (hematoxylin and eosin, H&E),
+illustrated with an example from The Cancer Imaging Archive
+[@tcia2013ov]. The methodology generalizes to spatial transcriptomics
+data when H&E or immunofluorescence images accompany transcriptomic profiles,
+which is the case for most modern datasets.
+
+The Python ecosystem offers powerful frameworks for spatial image processing,
+including `SpatialData` [@marconato2024spatialdata]. R/Bioconductor has a
+comparably mature suite of geostatistical and geographical analysis tools —
+`terra`, `sf` [@pebesma2018sf], and `spatstat`
+[@baddeley2005spatstat] — but as image sizes and cell counts grow, R users
+hit a "raster–polygon bottleneck": the inability to efficiently extract image
+features from massive rasters and intersect them with millions of polygons
+without exceeding system memory.
+
+The core problem we address is enabling **scalable image feature extraction**
+in R. By bridging cloud-optimized image formats (Zarr) with high-performance
+spatial databases (GeoParquet), we aim to unlock R's specialized spatial
+statistics for the digital pathology community.
+
+## Methods
+
+We explored strategies for efficient reading and cropping of large OME-TIFF
+and Zarr images, and for subsetting large polygon collections in R.
+
+The resulting pipeline prioritizes memory efficiency by never materializing
+more data than needed for a single processing window. We use **GeoParquet**
+for polygon storage and **OME-Zarr** for image storage.
+
+### Example data
+
+As a test image we used the H&E slide
+`TCGA-02-0001-01Z-00-DX1.83fce43e-42ac-4dcd-b156-2908e75f2e47` from TCGA,
+retrieved via the `imageTCGA` Bioconductor package
+[@imageTCGA]. We converted the original SVS image into OME-TIFF and
+OME-Zarr; the image has three channels (RGB) and 35,558 × 48,002 pixels, and
+the Zarr file contains 48 chunks of shape 3 × 6,688 × 6,688.
+
+`imageTCGA` also provides nuclear segmentations from HoVer-Net
+[@graham2019hovernet]. Polygons are originally distributed as GeoJSON;
+we additionally produced a GeoParquet version. The polygon file contains
+333,207 polygons, with a 2× scale factor between polygon and image
+coordinates (the polygons assume 40× magnification while the image is 20×).
+
+### Technical stack
+
+- **terra** [@terra]: high-performance lazy raster loading and
+  raster–vector intersection, originally developed for satellite imagery.
+- **DuckDB** and **duckspatial** [@duckspatial]: out-of-memory spatial
+  filtering, allowing R to query million-row polygon files as if they were
+  local databases.
+- **ZarrArray** [@zarrarray]: a `DelayedArray`
+  [@delayedarray] backend for native Zarr access within Bioconductor.
+
+### Algorithm
+
+Rather than iterating over polygons (the "vector-first" approach), our
+algorithm iterates over the **intrinsic Zarr chunks** of the image (the
+"raster-first" approach). For each chunk $C_{i,j}$:
+
+1. **Spatial fetch.** A SQL query is pushed to the Parquet file to retrieve
+   only polygons $P$ where $\mathrm{BBox}(P) \cap \mathrm{BBox}(C_{i,j}) \neq \emptyset$.
+2. **Lazy read.** The image data for $C_{i,j}$ is read into memory.
+3. **Rasterize.** The selected polygons are rasterized into a label mask.
+4. **Compute.** Per-channel pixel statistics (e.g., mean intensity) are
+   computed for each labeled object.
+
+**Chunk border effects.** The main difficulty is what we call the *border
+effect* (@fig-border-effect A): we want to read each chunk only once, but
+when a polygon straddles two chunks the in-memory pixel set for one chunk is
+incomplete. Our solution is a pixel accumulation strategy
+(@fig-border-effect B): when a polygon partially overlaps a chunk, we store
+the rasterized partial pixel set with the polygon's identifier; when the
+adjacent chunk is processed, we extend the buffer and only then compute
+statistics for the now-complete polygon.
+
+![Schematic of the border effect and pixel-accumulation strategy. **(A)** A
+polygon straddles two Zarr chunks; processing one chunk at a time leaves
+incomplete pixel coverage. **(B)** A buffered accumulation strategy combines
+partial pixel sets from successive chunks before computing the final
+per-object statistic, without re-reading any chunk.](../figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
+
+## Results and discussion
+
+### Random access to polygon files
+
+Pushing spatial queries to an out-of-memory Parquet file substantially
+outperforms traditional GeoJSON-based workflows, enabling whole-slide
+analyses on standard workstations. While `duckspatial` works with both
+formats, polygon subsetting was approximately 50× faster on GeoParquet than
+on GeoJSON.
+
+### Cropping and visualization of large images
+
+Reading, cropping, and visualizing large OME-TIFF images is efficient using
+`terra`'s `rast()` and `crop()`. For OME-Zarr, combining `ZarrArray`
+subsetting with `terra::rast()` works equally well. We successfully
+visualized the intersection of high-speed polygon queries with high-resolution
+pathology crops (@fig-segmentation-overlay).
+
+![Overlay of segmentation polygons on a TCGA H&E whole-slide image crop.
+The visualization demonstrates the successful intersection of a lazily
+loaded Zarr image with polygons retrieved via spatial query from
+GeoParquet.](../figures/team_image-analysis/ImageAnalysis-Figure2.png){#fig-segmentation-overlay width=80%}
+
+### Mask creation and statistics computation
+
+Combining the components above, we developed a prototype that:
+
+- iterates over Zarr image chunks,
+- selects polygons overlapping each chunk,
+- rasterizes them into an image mask, and
+- computes mean per-channel pixel intensity over each segmented object.
+
+On the example image, this analysis runs in 986 ± 2 seconds on a standard
+laptop. The current prototype skips polygons that overlap multiple chunks,
+sidestepping the border effect; full accumulation is the natural next step.

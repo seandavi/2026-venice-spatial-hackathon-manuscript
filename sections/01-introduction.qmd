@@ -1,0 +1,55 @@
+# Introduction
+
+This manuscript documents the work performed at the Bioconductor Spatial Data
+and Image Analysis Hackathon, held in Venice, Italy in April 2026. The
+hackathon brought together 28 researchers and software developers to advance
+Bioconductor capabilities in spatial data handling, analysis, and image
+analysis. Work was organized into team projects spanning three days, with
+each team independently scoping and executing on a challenge important to its
+members.
+
+## Schedule and structure {#sec-schedule}
+
+Each day began at 09:00 with a brief plenary across all teams. Coffee breaks
+at 10:30 and 15:30, plus a 12:30–13:30 lunch, gave teams structured
+opportunities to compare notes. Days 1 and 2 ended at 17:00 with five-minute
+single-slide updates from each team. Day 1 also included a mid-day plan
+presentation right after lunch. The mid-day plan helped teams converge
+quickly on a focused project, with the explicit understanding that the plan
+would evolve over the next two days. The end-of-day summaries surfaced shared
+challenges and made cross-team progress visible.
+
+| Time            | Activity                                                  |
+|-----------------|-----------------------------------------------------------|
+| 09:00           | Brief plenary with all teams                              |
+| 10:30           | Coffee break                                              |
+| 12:30 – 13:30   | Lunch                                                     |
+| 13:30 (Day 1)   | Initial project plan, one slide per team                  |
+| 15:30           | Coffee break                                              |
+| 17:00 (Days 1–2)| End-of-day team summaries, one slide per team             |
+
+: Daily schedule {#tbl-schedule}
+
+Each team worked in a public GitHub repository created and maintained
+throughout the three days. We stressed `README.md` as the entry point, on the
+premise that future collaboration and visibility scale with a strong landing
+page.
+
+Each team also designated a writer responsible for contributing to this
+manuscript. Author and conflict-of-interest information was collected
+in a shared spreadsheet for attribution. On the morning of day 3 we held a
+short writers' meeting to agree on figure and text contribution mechanics;
+writers then worked with their teams through the afternoon to complete drafts
+before departing.
+
+## Hackathon teams {#sec-teams}
+
+Participants self-organized into four teams:
+
+1. Image and segmentation data manipulation and visualization (@sec-image-analysis)
+2. Spatial foundation models for the Bioconductor community (@sec-foundation-models)
+3. Spatially stratified differential expression analysis (@sec-stratified-de)
+4. Enhanced infrastructure and interoperability for spatial data in Bioconductor (@sec-interoperability)
+
+The remainder of this manuscript reports each team's motivation, methods,
+and outputs.

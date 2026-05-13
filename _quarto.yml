@@ -1,0 +1,31 @@
+project:
+  type: default
+  output-dir: _output
+
+bibliography: references.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/nature.csl
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    embed-resources: true
+  pdf:
+    documentclass: article
+    papersize: letter
+    geometry:
+      - margin=1in
+    toc: false
+    number-sections: true
+    colorlinks: true
+    fig-pos: "H"
+    keep-tex: true
+  docx:
+    toc: false
+    number-sections: true
+
+execute:
+  echo: false
+  warning: false

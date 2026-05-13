@@ -1,0 +1,29 @@
+# Quarto build artifacts
+_output/
+_freeze/
+.quarto/
+*_files/
+*_cache/
+
+# Rendered outputs (commit only when explicitly intended)
+index.html
+index.pdf
+index.docx
+*.tex
+*.aux
+*.log
+*.out
+*.toc
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Local env
+.Renviron
+.Rhistory
+.RData
+.Rproj.user/

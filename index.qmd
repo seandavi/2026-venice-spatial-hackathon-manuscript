@@ -1,0 +1,205 @@
+---
+title: "Bioconductor Spatial Data and Image Analysis Hackathon"
+subtitle: "Venice, April 2026"
+date: today
+author:
+  - name: Helena Crowell
+    orcid: 0000-0002-4801-1767
+    email: helena@crowell.eu
+    affiliations:
+      - ref: cnag
+    corresponding: true
+  - name: Luca Marconato
+    orcid: 0000-0003-3198-1326
+    email: luca.marconato@embl.de
+    affiliations:
+      - ref: embl
+      - ref: dkfz
+  - name: Ilaria Billato
+    orcid: 0000-0002-3335-3254
+    email: ilaria.billato@unipd.it
+    affiliations:
+      - ref: unipd
+  - name: Matteo Calgaro
+    orcid: 0000-0002-3056-518X
+    email: matteo.calgaro@unipd.it
+    affiliations:
+      - ref: unipd
+  - name: Robert Castelo
+    orcid: 0000-0003-2229-4508
+    email: robert.castelo@upf.edu
+    affiliations:
+      - ref: upf
+  - name: Carissa Chen
+    orcid: 0000-0002-9225-7086
+    email: carissayannan.chen@unipd.it
+    affiliations:
+      - ref: unipd
+  - name: Sean Davis
+    orcid: 0000-0002-8991-6458
+    email: seandavi@gmail.com
+    affiliations:
+      - ref: anschutz
+  - name: Martin Emons
+    orcid: 0009-0000-5219-5311
+    email: martin.emons@uzh.ch
+    affiliations:
+      - ref: uzh-sib
+  - name: Gabriel Grajeda
+    orcid: 0009-0003-7242-7476
+    email: ggrajeda@g.harvard.edu
+    affiliations:
+      - ref: harvard
+  - name: Hugo Gruson
+    orcid: 0000-0002-4094-1476
+    email: hugo.gruson@embl.de
+    affiliations:
+      - ref: embl
+  - name: Samuel Gunz
+    orcid: 0000-0002-8909-0932
+    email: samuel.gunz@uzh.ch
+    affiliations:
+      - ref: uzh-sib
+  - name: Juan Henao
+    orcid: 0000-0003-0783-1432
+    email: juanhenao.sanchez@gmail.com
+    affiliations:
+      - ref: helmholtz
+  - name: Sviatoslav Kharuk
+    orcid: 0009-0006-9901-6185
+    email: sviatoslav.kharuk@embl.de
+    affiliations:
+      - ref: embl
+  - name: Daria Lazic
+    orcid: 0000-0002-8793-6885
+    email: daria.lazic@embl.de
+    affiliations:
+      - ref: embl
+  - name: Artür Manukyan
+    orcid: 0000-0002-0441-9517
+    email: artur-man@hotmail.com
+    affiliations:
+      - ref: mdc
+  - name: Pere Moles-Seró
+    orcid: 0009-0009-4408-1897
+    email: pere.moles@upf.edu
+    affiliations:
+      - ref: upf
+  - name: Elizabeth Purdom
+    orcid: 0000-0001-9455-7990
+    email: epurdom@stat.berkeley.edu
+    affiliations:
+      - ref: berkeley
+  - name: Dario Righelli
+    orcid: 0000-0003-1504-3583
+    email: dario.righelli@unipd.it
+    affiliations:
+      - ref: unipd-dibio
+  - name: Gabriele Sales
+    orcid: 0000-0003-2078-5661
+    email: gabriele.sales@unipd.it
+    affiliations:
+      - ref: unipd
+  - name: Mike L. Smith
+    orcid: 0000-0002-7800-3848
+    email: grimbough@gmail.com
+    affiliations:
+      - ref: boehringer
+  - name: Charlotte Soneson
+    orcid: 0000-0003-3833-2169
+    email: charlotte.soneson@fmi.ch
+    affiliations:
+      - ref: fmi
+      - ref: sib-basel
+  - name: Michael B. Stadler
+    orcid: 0000-0002-2269-4934
+    email: michael.stadler@fmi.ch
+    affiliations:
+      - ref: fmi
+      - ref: sib-basel
+      - ref: unibasel
+  - name: Wolfgang Huber
+    affiliations:
+      - ref: embl
+  - name: Davide Risso
+    orcid: 0000-0001-8508-5012
+    email: davide.risso@unipd.it
+    affiliations:
+      - ref: unipd
+    corresponding: true
+affiliations:
+  - id: cnag
+    name: Centro Nacional de Análisis Genómico, Barcelona, Spain
+  - id: embl
+    name: European Molecular Biology Laboratory, Heidelberg, Germany
+  - id: dkfz
+    name: German Cancer Research Center (DKFZ), Heidelberg, Germany
+  - id: unipd
+    name: University of Padova, Padova, Italy
+  - id: unipd-dibio
+    name: Department of Biology (DiBio), University of Padova, Padova, Italy
+  - id: upf
+    name: Universitat Pompeu Fabra, Barcelona, Spain
+  - id: anschutz
+    name: University of Colorado Anschutz School of Medicine, Aurora, CO, USA
+  - id: uzh-sib
+    name: University of Zurich and Swiss Institute of Bioinformatics, Zurich, Switzerland
+  - id: harvard
+    name: Harvard T.H. Chan School of Public Health, Boston, MA, USA
+  - id: helmholtz
+    name: Computational Health Center, Helmholtz Munich, Neuherberg, Germany
+  - id: mdc
+    name: Max Delbrück Center for Molecular Medicine, Berlin, Germany
+  - id: berkeley
+    name: Department of Statistics, University of California, Berkeley, CA, USA
+  - id: boehringer
+    name: Computational Innovation, Boehringer Ingelheim Pharma GmbH & Co. KG, Biberach, Germany
+  - id: fmi
+    name: Friedrich Miescher Institute for Biomedical Research, Basel, Switzerland
+  - id: sib-basel
+    name: SIB Swiss Institute of Bioinformatics, Basel, Switzerland
+  - id: unibasel
+    name: University of Basel, Basel, Switzerland
+abstract: |
+  We report the outcomes of the Bioconductor Spatial Data and Image Analysis
+  Hackathon, held in Venice, Italy in April 2026. Twenty-eight researchers and
+  software developers organized into four teams to advance R/Bioconductor
+  capabilities for spatial omics and image analysis. Outputs include scalable
+  raster–polygon workflows for whole-slide pathology, an R package for running
+  spatial foundation models via reticulate/basilisk, a spatially stratified
+  differential expression framework, and substantial enhancements to the
+  R `SpatialData` infrastructure for interoperability with the Python `spatialdata`
+  ecosystem. All software is openly available and under active development.
+keywords:
+  - Bioconductor
+  - spatial omics
+  - image analysis
+  - foundation models
+  - SpatialData
+---
+
+{{< include sections/01-introduction.qmd >}}
+
+{{< include sections/02-image-analysis.qmd >}}
+
+{{< include sections/03-foundation-models.qmd >}}
+
+{{< include sections/04-stratified-de.qmd >}}
+
+{{< include sections/05-interoperability.qmd >}}
+
+{{< include sections/06-discussion.qmd >}}
+
+# Code and data availability
+
+All software developed during the hackathon is hosted in public GitHub
+repositories linked from the relevant team sections.
+
+# Author contributions
+
+H.C., L.M., W.H., and D.R. organized and led the hackathon. All authors
+participated in one or more team projects and contributed to the manuscript.
+
+# Acknowledgements
+
+We thank the hackathon hosts and sponsors for making this event possible.

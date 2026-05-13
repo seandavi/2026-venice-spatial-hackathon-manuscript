@@ -1,0 +1,180 @@
+# Spatially stratified differential expression analysis {#sec-stratified-de}
+
+Source code: <https://github.com/mcalgaro93/SpatialStratifiedDE>
+
+## Motivation
+
+Spatial data are a powerful platform for differential expression (DE)
+analyses, letting us interrogate how a given cell type changes phenotype or
+expression in response to its environment — for example, how tumor cells
+respond to T-cell attack, or how fibroblast expression changes in regions of
+tissue damage.
+
+This kind of phenotype–environment DE testing is typically performed at the
+level of whole studies or whole tissues. That has two important limitations.
+First, it ignores spatial autocorrelation in gene expression, leading to
+biased estimates and overconfident standard errors. Second, it ignores the
+fact that correlations can be heterogeneous across a tissue: tumor cells, for
+example, may use different pathways in response to T-cell attack under
+different local conditions. Spatial datasets are now large and rich enough
+to support DE questions at finer resolution than the entire tissue.
+
+## Proposal
+
+Instead of asking the DE question at the level of a whole tissue, we split
+the tissue into dozens or hundreds of small *patches* and run DE separately
+in each. This reveals the precise regions where a given DE pattern occurs.
+
+Individual patches may be underpowered. To recover confidence, we use a
+spatially smoothed meta-analysis: for each patch we identify the $K$ patches
+most similar to it — not in their DE results, but in underlying traits like
+cell-type composition — and meta-analyze the DE results across that
+neighborhood, regaining statistical power lost to fine-grained stratification.
+
+## Methods
+
+### Patch definition
+
+`getPatches()` defines patches via an iterative algorithm that incrementally
+adjusts patch borders to ensure adequate statistical power everywhere.
+Patches are scored by the sum of squares of the design variable, which
+determines OLS power; at each iteration, low-power patches expand into
+higher-power neighbors, gradually homogenizing per-patch power. In the
+simplest mode, only the target cell type's xy coordinates and design
+variable values are required.
+
+We also explored a more nuanced approach: ideal patches have high variance
+in the design variable while being homogeneous in everything else, which
+controls confounding. Here we first applied standard spatial clustering to
+partition the tissue into niches/spatial domains and then ran `getPatches()`
+within each domain. The resulting patches are more internally homogeneous
+(they don't span domains), at some cost in maximum achievable power. We
+hypothesize the trade-off is worthwhile because within-patch confounding is
+the more dangerous failure mode.
+
+### Stratified DE
+
+For each patch, `patchDE()` performs two steps. First, raw counts are
+transformed to Pearson residuals on the fly (a tissue-wide residual matrix
+would typically be too large to materialize). Second, `hastyDE()` performs
+OLS for all genes via a single matrix multiplication, producing complete
+per-patch DE results in seconds. This efficiency matters: a typical study
+might involve >18,000 genes and >1,000 patches.
+
+### Characterizing patches
+
+To meta-analyze, we need a definition of "spatial context" — a matrix
+encoding each patch in a reasonable number of features. Several reasonable
+choices are available, depending on the study design:
+
+- Mean gene expression across all cells (or just the target cell type) per
+  patch, optionally reduced to ~50 PCs.
+- Cell-type abundances per patch.
+- Per-patch averages of cell-level PCA embeddings, optionally with within-patch
+  variance.
+- Per-patch averages of foundation-model embeddings (e.g., Novae) over cells.
+
+The right choice is a design question for the analyst.
+
+### Unsupervised subgroup meta-analysis
+
+Given per-patch DE estimates and standard errors plus the patch-characteristics
+matrix, we identify each patch's $K$ nearest neighbors in patch-characteristic
+space — these are intended to be biologically similar — and perform a
+meta-analysis across the patch and its neighbors. The unstable per-patch
+estimate is replaced with a more precise, more confident regional estimate.
+
+### Pursuing biological understanding
+
+The output is a matrix of DE results for all patches × genes, which is rich
+but daunting. We want to facilitate downstream analyses including:
+
+- Subgroup analyses (drawn from clinical-trial methodology) to surface
+  well-characterized regions where a gene's DE signal is strongest, or where
+  results most diverge from the average patch.
+- Clustering genes into modules with similar DE profiles.
+- Clustering patches into groups with similar DE profiles.
+- Associating per-patch DE results with covariates such as pathologist
+  annotations or local cell-type abundance.
+
+## Results
+
+We applied a prototype of the `SpatialStratifiedDE` pipeline to two spatial
+datasets: a mouse colon MERFISH dataset [@petukhov2024mousecolon] used to
+study how colon epithelial cells change with proximity to T cells after
+three days of DSS-induced colitis, and a colon-cancer spatial transcriptomics
+dataset [@colon2025] used to study how tumor cells change with proximity
+to T cells. Together these illustrate how patch-wise DE plus spatially
+smoothed meta-analysis surface localized, high-confidence DE patterns.
+
+### Iterative algorithm yields patches with reasonable power
+
+@fig-getpatches-power shows the improvement of patch power over iterations
+of `getPatches()` on epithelial cells of a mouse colon. Top panels show
+patch footprints at the first and final iterations; bottom panels show each
+patch's sum of squares of the predictor variable, which determines DE
+statistical power.
+
+![Improvement of patch power over `getPatches()` iterations on mouse colon
+epithelial cells.](../figures/team_analysis/analysis_fig1.png){#fig-getpatches-power width=85%}
+
+### Smoothed patch meta-analysis improves statistical power
+
+@fig-meta-analysis compares per-patch DE results before and after
+meta-analysis in the colon-cancer sample. Left: $t$-statistics from
+single-patch DE on a single gene. Right: $z$-statistics from meta-analysis
+on each patch's 15 most comparable patches (nearest neighbors in
+patch-composition space).
+
+![Single-patch versus meta-analyzed DE in the colon cancer sample. Left:
+$t$-statistics from single-patch DE for one gene. Right: $z$-statistics
+from meta-analysis across each patch's 15 nearest neighbors in patch-
+composition space.](../figures/team_analysis/analysis_fig2.png){#fig-meta-analysis width=85%}
+
+## Next steps and open questions
+
+Methods:
+
+- Recommendations and utility functions for defining patch characteristics.
+- Vignettes for interpreting subgroup results — what *is* the nature of
+  patches with enriched DE results?
+- Can the meta-analysis account for non-independence among patches (cf. the
+  `metapod` package)?
+- Instead of full meta-analysis across neighbors, could a patch's neighbors
+  serve as a prior that the patch's own data updates?
+- Clustering of genes and of patches based on per-patch DE profiles.
+
+Code and packaging:
+
+- A function dedicated to meta-analysis across patches.
+- A Bioconductor wrapper for the pipeline.
+- Convenience functions for patch-characteristic construction.
+- A data package usable for LLM-driven exploration.
+- Vignettes and case studies.
+
+Applications:
+
+- Use the approach in a real analysis to validate that it gets us to useful
+  answers.
+- Decide whether this is a hypothesis-testing tool, an exploratory tool, or
+  both — and design diagnostics accordingly.
+
+Other:
+
+- Pick a memorable name (working title: SpaceMosaic).
+
+## Discussion
+
+This approach is not limited to differential expression. Any method that
+produces a summary statistic and a standard error can be stratified across
+patches and subjected to the same meta-analysis workflow.
+
+There are deep open questions. Is this a hypothesis-testing framework or an
+exploratory framework? How should we account for dependence structures among
+patches? How should multiple-testing correction work?
+
+The ultimate goal is to enable nuanced, confident statements like "[our cell
+type] up-regulates [this gene] in response to [X] in spatial regions with
+[these characteristics]" — without worrying that the result is an artifact
+of cryptic confounding. Defining the right post-hoc statistics and
+diagnostic plots to support that claim is ongoing work.
