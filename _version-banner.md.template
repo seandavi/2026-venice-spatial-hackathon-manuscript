@@ -1,5 +1,0 @@
-::: {.callout-note appearance="minimal" icon=false collapse=false}
-**This version:** [`__VERSION_SHA__`](__VERSION_URL__) · [latest HTML](__VERSION_LATEST__) · [PDF](__VERSION_PDF__)
-
-Snapshots at `/v/<commit-sha>/` are immutable; the `latest HTML` and `PDF` links always point to the most recent build of `main`.
-:::
