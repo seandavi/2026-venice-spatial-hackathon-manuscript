@@ -115,8 +115,14 @@ patch footprints at the first and final iterations; bottom panels show each
 patch's sum of squares of the predictor variable, which determines DE
 statistical power.
 
-![Improvement of patch power over `getPatches()` iterations on mouse colon
-epithelial cells.](../figures/team_analysis/analysis_fig1.png){#fig-getpatches-power width=85%}
+::: {#fig-getpatches-power}
+*Figure placeholder.* Improvement of patch power over `getPatches()`
+iterations on mouse colon epithelial cells. Top panels show patch
+footprints at first and final iterations; bottom panels show each
+patch's sum of squares of the predictor variable. Source slide is in the
+Drive `team_analysis/` folder as `analysis fig1.pptx` and needs to be
+exported — see issue #1.
+:::
 
 ### Smoothed patch meta-analysis improves statistical power
 
