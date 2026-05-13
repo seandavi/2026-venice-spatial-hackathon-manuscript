@@ -102,7 +102,7 @@ deconvolution, used here as a proxy for signal contamination.
 :::
 
 ::: {#fig-spatialdataplot-images}
-![](figures/team_interoperability/plotting.png) 
+![](figures/team_interoperability/plotting.png)
 
 Demonstration of `SpatialData.plot` image-visualization
 capabilities. **(a)** Greyscale image of the dataset shown in
