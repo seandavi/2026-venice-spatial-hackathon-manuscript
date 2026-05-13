@@ -1,5 +1,22 @@
 # Enhanced infrastructure and interoperability for spatial omics data in Bioconductor {#sec-interoperability}
 
+Source code:
+
+- [`SpatialData`](https://github.com/HelenaLC/SpatialData) — R interface to Python's `spatialdata`
+- [`SpatialData.data`](https://github.com/HelenaLC/SpatialData.data) — example datasets
+- [`SpatialData.plot`](https://github.com/HelenaLC/SpatialData.plot) — visualization
+- [`VeniceInterop`](https://github.com/HelenaLC/VeniceInterop) — end-to-end workflow and relationships prototype
+
+## Motivation
+
+Modern spatial-omics platforms produce data that is increasingly authored,
+stored, and pre-processed in the Python `scverse` ecosystem (notably
+`spatialdata` and `AnnData`), while Bioconductor remains the natural
+downstream environment for many statistical and biological analyses. Without
+a faithful bridge between the two, users either duplicate infrastructure or
+choose one ecosystem at the cost of tools that live in the other. The work
+described here closes that gap.
+
 ## Background
 
 Python's [`spatialdata`](https://spatialdata.scverse.org/en/latest/index.html)
@@ -21,6 +38,24 @@ into the Bioconductor ecosystem:
   objects, read directly from `AnnData` via
   [`anndataR`](https://bioconductor.org/packages//release/bioc/html/anndataR.html)
   [@anndataR2025].
+
+```{mermaid}
+%%| label: fig-spatialdata-layers
+%%| fig-cap: "Storage and reader path for each `SpatialData` element type. Images and labels are .zarr-backed; points and shapes are .parquet-backed; tables are `AnnData`/.zarr."
+flowchart LR
+  subgraph SD ["SpatialData object"]
+    direction TB
+    I["image / label"]
+    P["point / shape"]
+    T["table"]
+  end
+  I -- ".zarr" --> Rarr
+  P -- ".parquet / .geoparquet" --> duckspatial
+  T -- "AnnData (.zarr)" --> anndataR
+  Rarr --> R[("R / Bioconductor")]
+  duckspatial --> R
+  anndataR --> R
+```
 
 Because tabular information lands in `SingleCellExperiment`, interoperability
 with Bioconductor's existing single-cell infrastructure is preserved. The

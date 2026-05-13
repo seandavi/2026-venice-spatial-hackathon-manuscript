@@ -55,37 +55,29 @@ runnable through the package. {#tbl-bfg-models}
 
 ### Model implementations
 
-**scGPT** [@cui2024scgpt] is a foundation model for single-cell
-transcriptomics. While not designed for spatial data, transcriptional
-profiles from spatial assays can be passed through it for comparison with
-spatial-specific models. (A spatial extension of scGPT is also available
-[@wang2025scgptspatial] but is not yet integrated.) Our implementation
-uses upstream PyTorch checkpoints (`.pt` plus support `.json` files) rather
-than the Hugging Face port, because scGPT distributes multiple pretrained
-checkpoints and working with them directly preserves user choice. `Run_scGPT()`
-takes the path to an `.h5ad` file and the directory containing the
-pretrained model.
+**scGPT.** While not designed for spatial data, transcriptional profiles
+from spatial assays can be passed through it for comparison with
+spatial-specific models. (A spatial extension is available
+[@wang2025scgptspatial] but not yet integrated.) Our implementation
+uses upstream PyTorch checkpoints (`.pt` plus support `.json` files)
+rather than the Hugging Face port, because scGPT distributes multiple
+pretrained checkpoints and working with them directly preserves user
+choice. `Run_scGPT()` takes the path to an `.h5ad` file and the directory
+containing the pretrained model.
 
-**Novae** [@blampey2024novae] expects an `.h5ad` file with gene
-expression and spatial coordinates. It uses an attentional graph neural
-network to produce embeddings and spatially-aware domain assignments. The
-output is an `AnnData` object: embeddings at `adata$obsm$novae_latent`,
-domain assignments at `adata$obs$novae_domains_7`. Novae runs on GPUs and
-Apple Metal Performance Shaders (MPS).
+**Novae.** Embeddings are accessible from the returned `AnnData` at
+`adata$obsm$novae_latent`, domain assignments at
+`adata$obs$novae_domains_7`. Novae runs on CUDA GPUs and Apple Metal
+Performance Shaders (MPS).
 
-**Prov-GigaPath** [@xu2024gigapath] is a whole-slide foundation model for
-computational pathology trained on real-world H&E data. It pairs a
-DINOv2-pretrained ViT-giant tile encoder (1536-dim) with a LongNet slide
-encoder (768-dim), enabling local-morphology and global-context
-representations. Integration is in progress; the current obstacle is that
-the required Python environment is slow to provision because of the Python
-version download time, and we are still working out a robust pattern for
-remote GPU servers.
+**Prov-GigaPath.** Integration is in progress. The current blocker is
+provisioning the Python environment on remote GPU servers: the required
+Python build is slow to download and a robust install pattern for that
+setting is still being worked out.
 
-**Nimbus** [@rumberger2025automated] is built on a U-Net backbone widely
-used in biomedical image analysis. It accepts each marker channel of a
-multiplexed image and returns a per-cell positivity score plus annotations,
-making it broadly applicable across multiplexed-imaging platforms.
+**Nimbus.** Operates marker by marker across the multiplexed image,
+which makes it portable across multiplexed-imaging platforms with
+different channel counts.
 
 ### Use case: KRONOS
 
@@ -117,58 +109,45 @@ folder; needs re-download — see open issue.
 
 ## End-to-end compatibility with `SpatialExperiment`
 
-The package design takes a `SpatialExperiment` in and returns embeddings in
+The package design takes a `SpatialExperiment` in and returns embeddings to
 the same object. Because most Python tools expect `AnnData`, we extended
-`anndataR` to support bidirectional conversion between `SpatialExperiment`
-and `AnnData`, and built an evaluation pipeline to compare round-tripped
-objects. That comparison surfaced a real mismatch in spatial-data processing
-that we are working through.
+`anndataR` to support bidirectional conversion between the two formats —
+layering a spatially aware translation on top of the existing
+`SingleCellExperiment` conversion framework. Canonical mappings for assays,
+feature- and cell-level annotations, dimensionality reductions, and
+graph-like pairwise structures are preserved; the new logic adds explicit
+handling for spatial state. Forward (R → Python), `spatialCoords` are
+serialized to `obsm["spatial"]` and image metadata from `imgData` is
+written to `uns["spatial"]` in a library-indexed nested layout compatible
+with Scanpy conventions; in reverse (Python → R), those structures are
+parsed to reconstruct `SpatialExperiment` objects with restored coordinates
+and images.
 
-Once the conversion logic stabilizes and the remaining inconsistencies are
-resolved through systematic testing, the implementation will be consolidated
-and submitted as a pull request to `anndataR`. The current development branch
-can be installed with:
+The central difficulty is that `SpatialExperiment` carries semantics that
+are not native to `AnnData`: spatial coordinates are not generic
+embeddings, image metadata are heterogeneous and partially
+technology-specific, and multi-library datasets require deterministic
+reconciliation between observation-level sample annotations and
+image-level library identifiers. To address these we introduced reserved
+spatial keys, conflict checks against user-defined `obsm` and `uns`
+mappings, and a round-trip metadata container under
+`uns["anndataR_spatialexperiment"]` that preserves otherwise non-canonical
+information (original coordinate names, selected spatial keys, library
+identifier provenance, image export mode). Image payloads can be embedded,
+referenced, or omitted to balance interoperability, file size, and
+reversibility.
+
+The current development branch can be installed with:
 
 ```r
 remotes::install_github("drighelli/anndataR@from_as_spe")
 ```
 
-### `anndataR` ↔ `SpatialExperiment` interoperability
-
-We extended `anndataR` to support bidirectional conversion between
-`SpatialExperiment` and `AnnData` by layering a spatially aware translation
-on top of the existing `SingleCellExperiment` conversion framework, preserving
-canonical mappings for assays, feature- and cell-level annotations,
-dimensionality reductions, and graph-like pairwise structures while adding
-explicit handling for spatial state. Going forward (R → Python),
-`spatialCoords` are serialized to `obsm["spatial"]` and image-associated
-information from `imgData` is mapped to `uns["spatial"]` using a
-library-indexed nested representation compatible with Scanpy conventions;
-going back (Python → R), these structures are parsed to reconstruct
-`SpatialExperiment` objects with restored spatial coordinates and image
-metadata.
-
-The central technical difficulty is that `SpatialExperiment` carries
-semantics that are not native to the core `AnnData` object model: spatial
-coordinates are not generic embeddings, image metadata are heterogeneous
-and partially technology-specific, and multi-library datasets require a
-deterministic reconciliation between observation-level sample annotations
-and image-level library identifiers. To address these we introduced
-reserved spatial keys, conflict checks against user-defined `obsm` and
-`uns` mappings, and an auxiliary round-trip metadata container in
-`uns["anndataR_spatialexperiment"]` that preserves otherwise non-canonical
-information such as original spatial coordinate names, selected spatial
-keys, library identifier provenance, and image export mode. We further
-implemented explicit import/export policies for image payloads — embedded,
-reference-based, or omitted — to balance interoperability, file size, and
-reversibility.
-
 ### Testing the conversion
 
-Further validation work is needed. Preliminary evaluation suggests that
-discrepancies still emerge in specific configurations, particularly those
-involving technology-specific spatial metadata or image representations.
-The reproducibility case study in the `renovae` repository
-(<https://github.com/sales-lab/renovae>) documents one such mismatch.
-Targeted analysis of these reproducibility cases will help us identify
-remaining failure points in the conversion logic.
+Preliminary evaluation surfaces discrepancies in specific configurations,
+particularly those involving technology-specific spatial metadata or image
+representations. The reproducibility case study in the `renovae` repository
+(<https://github.com/sales-lab/renovae>) documents one such mismatch and
+will help us locate the remaining failure points before the work is
+upstreamed as a pull request to `anndataR`.

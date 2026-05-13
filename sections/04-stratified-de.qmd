@@ -33,6 +33,25 @@ neighborhood, regaining statistical power lost to fine-grained stratification.
 
 ## Methods
 
+The full workflow chains five stages, summarized in @fig-stratified-de-pipeline:
+patches are defined from cell coordinates and the design variable; per-patch
+DE is run via Pearson residuals + simultaneous OLS; each patch is described by
+a "spatial-context" feature vector; per-patch results are stabilized by
+meta-analysis across nearest neighbors in that feature space; and the
+resulting patch × gene matrix is the substrate for downstream biological
+exploration.
+
+```{mermaid}
+%%| label: fig-stratified-de-pipeline
+%%| fig-cap: "Spatially stratified DE pipeline. Each box corresponds to one Methods subsection below."
+flowchart LR
+  A["Cell coords +<br/>design variable"] --> B["getPatches:<br/>iterative borders"]
+  B --> C["patchDE:<br/>Pearson resid + OLS"]
+  C --> D["Patch characteristics<br/>(expression / cell type / FM emb)"]
+  D --> E["Subgroup meta-analysis<br/>K nearest neighbors"]
+  E --> F[("Per-patch DE matrix<br/>(patches × genes)")]
+```
+
 ### Patch definition
 
 `getPatches()` defines patches via an iterative algorithm that incrementally
@@ -158,16 +177,13 @@ Code and packaging:
 - A data package usable for LLM-driven exploration.
 - Vignettes and case studies.
 
-Applications:
+Applications and outstanding decisions:
 
 - Use the approach in a real analysis to validate that it gets us to useful
   answers.
 - Decide whether this is a hypothesis-testing tool, an exploratory tool, or
   both — and design diagnostics accordingly.
-
-Other:
-
-- Pick a memorable name (working title: SpaceMosaic).
+- Settle on a final package name (working title: `SpaceMosaic`).
 
 ## Discussion
 

@@ -55,13 +55,15 @@ coordinates (the polygons assume 40× magnification while the image is 20×).
 
 ### Technical stack
 
-- **terra** [@terra]: high-performance lazy raster loading and
-  raster–vector intersection, originally developed for satellite imagery.
-- **DuckDB** and **duckspatial** [@duckspatial]: out-of-memory spatial
-  filtering, allowing R to query million-row polygon files as if they were
-  local databases.
-- **ZarrArray** [@zarrarray]: a `DelayedArray`
-  [@delayedarray] backend for native Zarr access within Bioconductor.
+| Component | Role | Reference |
+|-----------|------|-----------|
+| OME-Zarr | Cloud-optimized chunked image format used to store the H&E pixels. | [zarr.dev](https://zarr.dev) |
+| GeoParquet | Columnar polygon storage with bounding-box metadata for fast spatial filtering. | [geoparquet.org](https://geoparquet.org) |
+| **terra** | Lazy raster loading and raster–vector intersection (originally for satellite imagery). | [@terra] |
+| **DuckDB** + **duckspatial** | Out-of-memory spatial filtering — query million-row polygon files as if they were a local database. | [@duckspatial] |
+| **ZarrArray** | `DelayedArray` backend for native Zarr access within Bioconductor. | [@zarrarray; @delayedarray] |
+
+: Components of the raster–polygon pipeline. {#tbl-image-stack}
 
 ### Algorithm
 
