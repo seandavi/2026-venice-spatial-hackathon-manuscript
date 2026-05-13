@@ -30,6 +30,10 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           tinytex: true
+        env:
+          # Authenticate the TinyTeX release lookup against the GitHub API
+          # so we don't hit unauthenticated rate limits.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Render HTML
         run: quarto render --to html
