@@ -192,22 +192,17 @@ keywords:
 
 # Code and data availability
 
-All software developed during the hackathon is hosted in public GitHub
-repositories linked from the relevant team sections.
+All software developed during the hackathon is hosted in public GitHub repositories linked from the relevant team sections.
 
 # Author contributions
 
-H.C., L.M., W.H., and D.R. organized and led the hackathon. All authors
-participated in one or more team projects and contributed to the manuscript.
+H.C., L.M., W.H., and D.R. organized and led the hackathon.
+All authors participated in one or more team projects and contributed to the manuscript.
 
 # Use of AI tools
 
-Claude (Anthropic, model `claude-opus-4-7`) was used to convert
-team-authored Google Docs into this Quarto project, scaffold the CI/CD
-workflow, and propose structural edits — including the table in
-@tbl-image-stack and the diagrams in @fig-spatialdata-layers and
-@fig-stratified-de-pipeline. The authors reviewed all AI output and
-retain full responsibility for the manuscript's content.
+Claude (Anthropic, model `claude-opus-4-7`) was used to convert team-authored Google Docs into this Quarto project, scaffold the CI/CD workflow, and propose structural edits — including the table in @tbl-image-stack and the diagrams in @fig-spatialdata-layers and @fig-stratified-de-pipeline.
+The authors reviewed all AI output and retain full responsibility for the manuscript's content.
 
 # Acknowledgements
 
