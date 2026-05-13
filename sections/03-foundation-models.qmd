@@ -1,21 +1,21 @@
 # Spatial foundation models for the Bioconductor community {#sec-foundation-models}
 
-Source code: <https://github.com/drighelli/BiocFoundationGPU>
+Source code: <https://github.com/drighelli/fomo>
 
 ## Motivation
 
 Foundation models for spatial data are predominantly distributed as Python packages, and configuring them for a particular compute environment is often fragile: most have specific version dependencies that are not always documented, even when the model is on PyPI.
 This makes individual models hard to install for many R users and makes reproducible benchmarking across models onerous.
-The `BiocFoundationGPU` package addresses both problems.
+The `fomo` package addresses both problems.
 
 ## Package overview
 
-`BiocFoundationGPU` configures and runs foundation-model pipelines from R.
+`fomo` configures and runs foundation-model pipelines from R.
 It uses `basilisk` and `reticulate` to build separate environments per model (@fig-bfg-schema), avoiding the dependency conflicts that arise when attempting to satisfy all models in a single environment.
 The package ships a collection of `BasiliskEnvironment` schemas that pin a Python version and the required PyPI dependencies for each model.
-For models not on PyPI, `BiocFoundationGPU` provides template scripts to build environments via `reticulate`.
+For models not on PyPI, `fomo` provides template scripts to build environments via `reticulate`.
 
-![Schematic of the `BiocFoundationGPU` package.
+![Schematic of the `fomo` package.
 Input data in `SpatialExperiment` is fed to functions that set up isolated Python environments via `reticulate`, run the model, and return embeddings into the `SpatialExperiment` object.](figures/team_foundationmodels/schema.png){#fig-bfg-schema width=85%}
 
 For each supported model, the package exports a `Run_<model>()` function (e.g., `Run_novae()`).
@@ -36,7 +36,7 @@ Wherever possible, weights are pulled from Hugging Face so the entire workflow r
 | ✅ | Nimbus [@rumberger2025automated] | Spatial proteomics | ✅ | Multiplex TIFF + segmentation mask | Per-cell expression estimates and annotations | — |
 | ❌ | KRONOS [@shaban2025foundation] | Spatial proteomics | ❌ | TIFF + mask + marker annotation | Per-patch embeddings | 384 |
 
-: Models packaged in `BiocFoundationGPU`. ✅ = exposed via `Run_*()`, 🟡 = environment recipe shipped but no wrapper yet, ❌ = not currently runnable through the package. {#tbl-bfg-models}
+: Models packaged in `fomo`. ✅ = exposed via `Run_*()`, 🟡 = environment recipe shipped but no wrapper yet, ❌ = not currently runnable through the package. {#tbl-bfg-models}
 
 ### Model implementations
 
