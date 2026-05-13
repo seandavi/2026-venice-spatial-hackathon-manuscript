@@ -41,6 +41,9 @@ jobs:
       - name: Render PDF
         run: quarto render --to pdf
 
+      - name: Render DOCX
+        run: quarto render --to docx
+
       # ----------------------------------------------------------------
       # Stage outputs for deployment.
       #
@@ -58,14 +61,20 @@ jobs:
           dest="public/v/${GITHUB_SHA}"
           mkdir -p "$dest"
           cp index.html "$dest/index.html"
+          cp index.pdf  "$dest/index.pdf"
+          cp index.docx "$dest/index.docx"
           cp index.pdf  "$dest/manuscript.pdf"
+          cp index.docx "$dest/manuscript.docx"
 
       - name: Stage latest (push to main only)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           mkdir -p public
           cp index.html public/index.html
+          cp index.pdf  public/index.pdf
+          cp index.docx public/index.docx
           cp index.pdf  public/manuscript.pdf
+          cp index.docx public/manuscript.docx
 
       - name: Stage PR preview
         if: github.event_name == 'pull_request'
@@ -73,7 +82,10 @@ jobs:
           dest="public/pr/${{ github.event.pull_request.number }}"
           mkdir -p "$dest"
           cp index.html "$dest/index.html"
+          cp index.pdf  "$dest/index.pdf"
+          cp index.docx "$dest/index.docx"
           cp index.pdf  "$dest/manuscript.pdf"
+          cp index.docx "$dest/manuscript.docx"
 
       - name: Deploy to gh-pages
         # Pulls from forks can't push to gh-pages with GITHUB_TOKEN — skip the
