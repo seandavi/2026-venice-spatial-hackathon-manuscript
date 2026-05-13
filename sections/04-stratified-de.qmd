@@ -85,7 +85,7 @@ Together these illustrate how patch-wise DE plus spatially smoothed meta-analysi
 
 ### Iterative algorithm yields patches with reasonable power
 
-@fig-getpatches-power shows the improvement of patch power over iterations of `getPatches()` on epithelial cells of a mouse colon.
+@fig-getpatches-power shows the improvement of patch power over iterations of `getPatches()` on epithelial cells of the mouse colon MERFISH dataset [@petukhov2024mousecolon].
 Top panels show patch footprints at the first and final iterations; bottom panels show each patch's sum of squares of the predictor variable, which determines DE statistical power.
 
 [!Improvement of patch power over `getPatches()`
@@ -95,7 +95,7 @@ patch's sum of squares of the predictor variable.](figures/team_analysis/analysi
 
 ### Smoothed patch meta-analysis improves statistical power
 
-@fig-meta-analysis compares per-patch DE results before and after meta-analysis in the colon-cancer sample.
+@fig-meta-analysis compares per-patch DE results before and after meta-analysis in the colon-cancer sample dataset [@colon2025].
 Left: $t$-statistics from single-patch DE on a single gene.
 Right: $z$-statistics from meta-analysis on each patch's 15 most comparable patches (nearest neighbors in patch-composition space).
 
