@@ -178,6 +178,10 @@ keywords:
   - SpatialData
 ---
 
+::: {.content-visible when-format="html"}
+{{< include _version-banner.md >}}
+:::
+
 {{< include sections/01-introduction.qmd >}}
 
 {{< include sections/02-image-analysis.qmd >}}
