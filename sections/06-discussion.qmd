@@ -1,36 +1,16 @@
 # Discussion {#sec-discussion}
 
-The four projects reported here address complementary layers of the
-spatial-omics stack. Team 1 tackled the raster–polygon bottleneck that has
-historically kept R/Bioconductor away from gigapixel digital pathology, and
-shows that pairing OME-Zarr with GeoParquet and pushing spatial queries to
-DuckDB makes whole-slide analysis tractable on a laptop. Team 2 lowered the
-bar for using spatial foundation models from R by isolating each model in
-its own Python environment and exposing a uniform `Run_*()` interface,
-turning what is currently a per-model setup project into a package install.
-Team 3 prototyped a spatially stratified differential expression framework
-that lets the location of an effect, not just its magnitude, become a
-first-class output of an analysis. Team 4 demonstrated end-to-end
-interoperability between Python's `spatialdata` and the R
-`SpatialData` family, with `duckspatial`-backed lazy queries and large gains
-in visualization performance.
+The four projects reported here address complementary layers of the spatial-omics stack.
+Team 1 tackled the raster–polygon bottleneck that has historically kept R/Bioconductor away from gigapixel digital pathology, and shows that pairing OME-Zarr with GeoParquet and pushing spatial queries to DuckDB makes whole-slide analysis tractable on a laptop. Team 2 lowered the bar for using spatial foundation models from R by isolating each model in its own Python environment and exposing a uniform `Run_*()` interface, turning what is currently a per-model setup project into a package install.
+Team 3 prototyped a spatially stratified differential expression framework that lets the location of an effect, not just its magnitude, become a first-class output of an analysis.
+Team 4 demonstrated end-to-end interoperability between Python's `spatialdata` and the R `SpatialData` family, with `duckspatial`-backed lazy queries and large gains in visualization performance.
 
-A consistent theme across teams is that the hard problem in scaling
-spatial analysis is not algorithmic but representational: choosing on-disk
-formats and access patterns that let the rest of the toolchain stay
-expressive and interactive. GeoParquet, OME-Zarr, and DuckDB recur because
-they let R code stay declarative while pushing the heavy lifting to indexed,
-chunked storage.
+A consistent theme across teams is that the hard problem in scaling spatial analysis is not algorithmic but representational: choosing on-disk formats and access patterns that let the rest of the toolchain stay expressive and interactive.
+GeoParquet, OME-Zarr, and DuckDB recur because they let R code stay declarative while pushing the heavy lifting to indexed, chunked storage.
 
-Several open questions remain. The patch-stratified DE framework needs to
-clarify whether it is best framed as hypothesis testing or as an
-exploratory tool, and to settle on the right multiple-testing model for
-non-independent neighborhoods. The foundation-models package has to handle
-models that are not on PyPI without forcing every user to provision their
-own environment. The `SpatialData` infrastructure work needs continued
-co-design with the Python `spatialdata` developers to keep the two
-ecosystems coherent.
+Several open questions remain.
+The patch-stratified DE framework needs to clarify whether it is best framed as hypothesis testing or as an exploratory tool, and to settle on the right multiple-testing model for non-independent neighborhoods.
+The foundation-models package has to handle models that are not on PyPI without forcing every user to provision their own environment.
+The `SpatialData` infrastructure work needs continued co-design with the Python `spatialdata` developers to keep the two ecosystems coherent.
 
-All software produced during the hackathon is open and under active
-development; we welcome contributions, issues, and use cases from the
-community.
+All software produced during the hackathon is open and under active development; we welcome contributions, issues, and use cases from the community.

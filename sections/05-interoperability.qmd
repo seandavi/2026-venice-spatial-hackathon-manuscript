@@ -9,23 +9,14 @@ Source code:
 
 ## Motivation
 
-Modern spatial-omics platforms produce data that is increasingly authored,
-stored, and pre-processed in the Python `scverse` ecosystem (notably
-`spatialdata` and `AnnData`), while Bioconductor remains the natural
-downstream environment for many statistical and biological analyses. Without
-a faithful bridge between the two, users either duplicate infrastructure or
-choose one ecosystem at the cost of tools that live in the other. The work
-described here closes that gap.
+Modern spatial-omics platforms produce data that is increasingly authored, stored, and pre-processed in the Python `scverse` ecosystem (notably `spatialdata` and `AnnData`), while Bioconductor remains the natural downstream environment for many statistical and biological analyses.
+Without a faithful bridge between the two, users either duplicate infrastructure or choose one ecosystem at the cost of tools that live in the other.
+The work described here closes that gap.
 
 ## Background
 
-Python's [`spatialdata`](https://spatialdata.scverse.org/en/latest/index.html)
-framework is a standardized format for spatial omics, storing data as `.zarr`
-files using an extension of the OME-NGFF specification
-[@marconato2024spatialdata]. The R
-[`SpatialData`](https://github.com/HelenaLC/SpatialData) package provides an
-R interface to `spatialdata` and integrates the resulting representations
-into the Bioconductor ecosystem:
+Python's [`spatialdata`](https://spatialdata.scverse.org/en/latest/index.html) framework is a standardized format for spatial omics, storing data as `.zarr` files using an extension of the OME-NGFF specification [@marconato2024spatialdata].
+The R [`SpatialData`](https://github.com/HelenaLC/SpatialData) package provides an R interface to `spatialdata` and integrates the resulting representations into the Bioconductor ecosystem:
 
 - *Image* and *label* elements (e.g., microscopy and rasterized segmentation
   results) are represented as `.zarr`-backed `ZarrArray`s via the
@@ -57,73 +48,38 @@ flowchart LR
   anndataR --> R
 ```
 
-Because tabular information lands in `SingleCellExperiment`, interoperability
-with Bioconductor's existing single-cell infrastructure is preserved. The
-on-disk representations of the other components support efficient lazy
-access via `Rarr` and `duckspatial`. Functionality includes spatial queries
-by rectangular bounding box or polygon, and masking between elements to
-aggregate information across layers.
+Because tabular information lands in `SingleCellExperiment`, interoperability with Bioconductor's existing single-cell infrastructure is preserved.
+The on-disk representations of the other components support efficient lazy access via `Rarr` and `duckspatial`.
+Functionality includes spatial queries by rectangular bounding box or polygon, and masking between elements to aggregate information across layers.
 
-Two companion packages provide modular `SpatialData` infrastructure:
-[`SpatialData.data`](https://github.com/HelenaLC/SpatialData.data) supplies
-toy and realistic example datasets (sequencing- and imaging-based), and
-[`SpatialData.plot`](https://github.com/HelenaLC/SpatialData.plot) handles
-visualization — including layered plots that overlay segmentation, mRNA
-molecules, and high-plex or histopathology imagery. An online gallery is
-under active development at <https://helenalc.github.io/SpatialData>.
+Two companion packages provide modular `SpatialData` infrastructure: [`SpatialData.data`](https://github.com/HelenaLC/SpatialData.data) supplies toy and realistic example datasets (sequencing- and imaging-based), and [`SpatialData.plot`](https://github.com/HelenaLC/SpatialData.plot) handles visualization — including layered plots that overlay segmentation, mRNA molecules, and high-plex or histopathology imagery.
+An online gallery is under active development at <https://helenalc.github.io/SpatialData>.
 
 ## Results
 
-To demonstrate the current capabilities and interoperability with existing
-R/Bioconductor tools, we built an end-to-end workflow: read results from
-[`SegTraQ`](https://github.com/LazDaria/SegTraQ) — a Python framework for
-cell segmentation and transcript-assignment QC — into R; apply two downstream
-analyses, namely RCTD-based signal purity scoring via
-[`spacexr`](https://bioconductor.org/packages//release/bioc/html/spacexr.html)
-[@cable2022rctd] and delineation of multicellular anatomical structures
-via [`sosta`](https://bioconductor.org/packages//release/bioc/html/sosta.html)
-[@sosta2025]; and visualize the results spatially with `SpatialData.plot`.
+To demonstrate the current capabilities and interoperability with existing R/Bioconductor tools, we built an end-to-end workflow: read results from [`SegTraQ`](https://github.com/LazDaria/SegTraQ) — a Python framework for cell segmentation and transcript-assignment QC — into R; apply two downstream analyses, namely RCTD-based signal purity scoring via [`spacexr`](https://bioconductor.org/packages//release/bioc/html/spacexr.html) [@cable2022rctd] and delineation of multicellular anatomical structures via [`sosta`](https://bioconductor.org/packages//release/bioc/html/sosta.html) [@sosta2025]; and visualize the results spatially with `SpatialData.plot`.
 
-Spatial subsetting emerged as a fundamental, recurring operation. These
-operations apply to potentially very large on-disk data — millions of
-transcript points or cells — and must avoid materializing the whole dataset
-in memory. We implemented this via
-[`duckspatial`](https://cran.r-project.org/web/packages/duckspatial/index.html),
-which exposes the spatial extension of [DuckDB](https://duckdb.org/) from R.
-Spatial filtering is compiled to SQL and executed by the database engine,
-loading only the matched rows. For example, transcripts overlapping a
-selected cell or within a region of interest can be efficiently extracted
-from a Parquet file with hundreds of millions of rows. Query regions can be
-rectangular bounding boxes or arbitrary polygons. This pattern is now used
-by the `query` method for both points and shapes in `SpatialData`.
+Spatial subsetting emerged as a fundamental, recurring operation.
+These operations apply to potentially very large on-disk data — millions of transcript points or cells — and must avoid materializing the whole dataset in memory.
+We implemented this via [`duckspatial`](https://cran.r-project.org/web/packages/duckspatial/index.html), which exposes the spatial extension of [DuckDB](https://duckdb.org/) from R.
+Spatial filtering is compiled to SQL and executed by the database engine, loading only the matched rows.
+For example, transcripts overlapping a selected cell or within a region of interest can be efficiently extracted from a Parquet file with hundreds of millions of rows.
+Query regions can be rectangular bounding boxes or arbitrary polygons.
+This pattern is now used by the `query` method for both points and shapes in `SpatialData`.
 
-The full workflow above — read Python-generated SpatialData, compute QC
-scores and anatomical structures, visualize subsets — is exemplified in
-@fig-spatialdata-overview, with image-specific visualization demonstrated
-in the accompanying figure described below. An R Markdown source plus
-rendered HTML is published at
-<https://github.com/HelenaLC/VeniceInterop>.
+The full workflow above — read Python-generated SpatialData, compute QC scores and anatomical structures, visualize subsets — is exemplified in @fig-spatialdata-overview, with image-specific visualization demonstrated in the accompanying figure described below.
+An R Markdown source plus rendered HTML is published at <https://github.com/HelenaLC/VeniceInterop>.
 
-As a side project we discussed how relationships across `SpatialData`
-elements are encoded and prototyped a new design for defining and exploring
-those relationships, both within and across `SpatialData` objects. Improving
-the design and exploration of relationship metadata is a prerequisite for
-broader adoption across packages and languages. We illustrated the prototype
-on the same Xenium subset used above, complemented with four additional
-`SpatialData` objects for additional modalities, and built an interactive
-viewer (`graph_all.html`); the code is in
-<https://github.com/HelenaLC/VeniceInterop/tree/main/relationships>.
+As a side project we discussed how relationships across `SpatialData` elements are encoded and prototyped a new design for defining and exploring those relationships, both within and across `SpatialData` objects.
+Improving the design and exploration of relationship metadata is a prerequisite for broader adoption across packages and languages.
+We illustrated the prototype on the same Xenium subset used above, complemented with four additional `SpatialData` objects for additional modalities, and built an interactive viewer (`graph_all.html`); the code is in <https://github.com/HelenaLC/VeniceInterop/tree/main/relationships>.
 
-![Prototype interactive explorer of relationships across `SpatialData`
-objects, demonstrating the new relationship-encoding design on a multi-modal
-Xenium dataset.](figures/team_interoperability/relationships_viewer.png){#fig-relationships width=80%}
+![Prototype interactive explorer of relationships across `SpatialData` objects, demonstrating the new relationship-encoding design on a multi-modal Xenium dataset.](figures/team_interoperability/relationships_viewer.png){#fig-relationships width=80%}
 
 ## Conclusion
 
-R `SpatialData` development began more than two years ago
-[@spatialdataR2024], but full functionality awaited several
-infrastructural pieces — notably delayed `.zarr` support and `AnnData`
-interoperability. Key achievements from this hackathon include:
+R `SpatialData` development began more than two years ago [@spatialdataR2024], but full functionality awaited several infrastructural pieces — notably delayed `.zarr` support and `AnnData` interoperability.
+Key achievements from this hackathon include:
 
 - Lazy handling of points (from `.parquet`) and shapes (from `.geoparquet`)
   via `duckspatial`.
