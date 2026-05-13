@@ -89,7 +89,7 @@ statistics for the now-complete polygon.
 polygon straddles two Zarr chunks; processing one chunk at a time leaves
 incomplete pixel coverage. **(B)** A buffered accumulation strategy combines
 partial pixel sets from successive chunks before computing the final
-per-object statistic, without re-reading any chunk.](../figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
+per-object statistic, without re-reading any chunk.](figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
 
 ## Results and discussion
 
@@ -112,7 +112,7 @@ pathology crops (@fig-segmentation-overlay).
 ![Overlay of segmentation polygons on a TCGA H&E whole-slide image crop.
 The visualization demonstrates the successful intersection of a lazily
 loaded Zarr image with polygons retrieved via spatial query from
-GeoParquet.](../figures/team_image-analysis/ImageAnalysis-Figure2.png){#fig-segmentation-overlay width=80%}
+GeoParquet.](figures/team_image-analysis/ImageAnalysis-Figure2.png){#fig-segmentation-overlay width=80%}
 
 ### Mask creation and statistics computation
 

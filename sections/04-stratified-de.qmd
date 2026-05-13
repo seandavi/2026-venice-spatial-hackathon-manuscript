@@ -135,7 +135,7 @@ patch-composition space).
 ![Single-patch versus meta-analyzed DE in the colon cancer sample. Left:
 $t$-statistics from single-patch DE for one gene. Right: $z$-statistics
 from meta-analysis across each patch's 15 nearest neighbors in patch-
-composition space.](../figures/team_analysis/analysis_fig2.png){#fig-meta-analysis width=85%}
+composition space.](figures/team_analysis/analysis_fig2.png){#fig-meta-analysis width=85%}
 
 ## Next steps and open questions
 

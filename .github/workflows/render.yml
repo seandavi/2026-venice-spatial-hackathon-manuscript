@@ -57,23 +57,23 @@ jobs:
         run: |
           dest="public/v/${GITHUB_SHA}"
           mkdir -p "$dest"
-          cp index.html "$dest/index.html"
-          cp index.pdf  "$dest/manuscript.pdf"
+          cp _output/index.html "$dest/index.html"
+          cp _output/index.pdf  "$dest/manuscript.pdf"
 
       - name: Stage latest (push to main only)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           mkdir -p public
-          cp index.html public/index.html
-          cp index.pdf  public/manuscript.pdf
+          cp _output/index.html public/index.html
+          cp _output/index.pdf  public/manuscript.pdf
 
       - name: Stage PR preview
         if: github.event_name == 'pull_request'
         run: |
           dest="public/pr/${{ github.event.pull_request.number }}"
           mkdir -p "$dest"
-          cp index.html "$dest/index.html"
-          cp index.pdf  "$dest/manuscript.pdf"
+          cp _output/index.html "$dest/index.html"
+          cp _output/index.pdf  "$dest/manuscript.pdf"
 
       - name: Deploy to gh-pages
         # Pulls from forks can't push to gh-pages with GITHUB_TOKEN — skip the

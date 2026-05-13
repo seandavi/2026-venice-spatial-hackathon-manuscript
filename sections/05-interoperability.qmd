@@ -81,7 +81,7 @@ viewer (`graph_all.html`); the code is in
 
 ![Prototype interactive explorer of relationships across `SpatialData`
 objects, demonstrating the new relationship-encoding design on a multi-modal
-Xenium dataset.](../figures/team_interoperability/relationships_viewer.png){#fig-relationships width=80%}
+Xenium dataset.](figures/team_interoperability/relationships_viewer.png){#fig-relationships width=80%}
 
 ## Conclusion
 
