@@ -1,6 +1,5 @@
 project:
   type: default
-  output-dir: _output
 
 bibliography: references.bib
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/nature.csl
