@@ -89,7 +89,9 @@ Key achievements from this hackathon include:
   contrast adjustment).
 
 ::: {#fig-spatialdata-overview}
-*Figure placeholder.* Schematic overview of `SpatialData` in R. Top to
+![](figures/team_interoperability/schematic.png)
+
+Schematic overview of `SpatialData` in R. Top to
 bottom: *SpatialData* objects comprise five layers (images, labels, shapes,
 points, and tables). Images and labels are `.zarr`-backed and read with
 `Rarr`; shapes and points are `.parquet`-backed and read with `duckspatial`;
@@ -100,7 +102,9 @@ deconvolution, used here as a proxy for signal contamination.
 :::
 
 ::: {#fig-spatialdataplot-images}
-*Figure placeholder.* Demonstration of `SpatialData.plot` image-visualization
+![](figures/team_interoperability/plotting.png)
+
+Demonstration of `SpatialData.plot` image-visualization
 capabilities. **(a)** Greyscale image of the dataset shown in
 @fig-spatialdata-overview. **(b)** Top-left: a 1-channel image with a
 user-configurable color. Bottom-left: 3-channel images mapped to RGB
