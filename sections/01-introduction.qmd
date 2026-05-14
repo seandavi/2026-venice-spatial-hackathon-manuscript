@@ -1,7 +1,7 @@
 # Introduction
 
 This manuscript documents the work performed at the Bioconductor Spatial Data and Image Analysis Hackathon, held in Venice, Italy in April 2026.
-The hackathon brought together 24 researchers and software developers to advance Bioconductor capabilities in spatial data handling, analysis, and image analysis.
+The hackathon brought together 27 researchers and software developers to advance Bioconductor capabilities in spatial data handling, analysis, and image analysis.
 Work was organized into team projects spanning three days, with each team independently scoping and executing on a challenge important to its members.
 
 ## Schedule and structure {#sec-schedule}
