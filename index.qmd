@@ -162,7 +162,7 @@ affiliations:
     name: University of Basel, Basel, Switzerland
 abstract: |
   We report the outcomes of the Bioconductor Spatial Data and Image Analysis
-  Hackathon, held in Venice, Italy in April 2026. Twenty-eight researchers and
+  Hackathon, held in Venice, Italy in April 2026. Twenty-four researchers and
   software developers organized into four teams to advance R/Bioconductor
   capabilities for spatial omics and image analysis. Outputs include scalable
   raster–polygon workflows for whole-slide pathology, an R package for running
