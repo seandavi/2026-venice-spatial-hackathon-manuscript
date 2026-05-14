@@ -80,12 +80,12 @@ We want to facilitate downstream analyses including:
 
 ## Results
 
-We applied a prototype of the `SpatialStratifiedDE` pipeline to two spatial datasets: a mouse colon MERFISH dataset [@petukhov2024mousecolon] used to study how colon epithelial cells change with proximity to T cells after three days of DSS-induced colitis, and a colon-cancer spatial transcriptomics dataset [@colon2025] used to study how tumor cells change with proximity to T cells.
+We applied a prototype of the `SpatialStratifiedDE` pipeline to two spatial datasets: a mouse colon MERFISH dataset [@cadinu2024mousecolon] used to study how colon epithelial cells change with proximity to T cells after three days of DSS-induced colitis, and a colon-cancer spatial transcriptomics dataset [@colon2025] used to study how tumor cells change with proximity to T cells.
 Together these illustrate how patch-wise DE plus spatially smoothed meta-analysis surface localized, high-confidence DE patterns.
 
 ### Iterative algorithm yields patches with reasonable power
 
-@fig-getpatches-power shows the improvement of patch power over iterations of `getPatches()` on epithelial cells of the mouse colon MERFISH dataset [@petukhov2024mousecolon].
+@fig-getpatches-power shows the improvement of patch power over iterations of `getPatches()` on epithelial cells of the mouse colon MERFISH dataset [@cadinu2024mousecolon].
 Top panels show patch footprints at the first and final iterations; bottom panels show each patch's sum of squares of the predictor variable, which determines DE statistical power.
 
 [!Improvement of patch power over `getPatches()`
