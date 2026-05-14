@@ -87,4 +87,4 @@ Combining the components above, we developed a prototype that:
 - rasterizes them into an image mask, and
 - computes mean per-channel pixel intensity over each segmented object.
 
-On the example image, this analysis runs in 986 ± 2 seconds on a standard laptop. The current prototype skips polygons that overlap multiple chunks, sidestepping the border effect; full accumulation is the natural next step.
+On the example image, this analysis runs in in $986 \pm 2$ seconds using R 4.5.3 on a MacBook Pro with an Apple M5 chip, 10-core CPU, 32 GB RAM, and local-SSD image data. The workflow reads only the relevant cell-boundary shapes and Zarr image data for each chunk, avoiding full-image materialization. Loading the full image into memory on the same machine resulted in an out-of-memory error. The current prototype skips polygons that overlap multiple chunks, sidestepping the border effect; full accumulation is the natural next step.
