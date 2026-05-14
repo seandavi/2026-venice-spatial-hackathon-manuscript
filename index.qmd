@@ -30,11 +30,17 @@ author:
     email: robert.castelo@upf.edu
     affiliations:
       - ref: upf
+  - name: Riccardo Ceccaroni
+    affiliations:
+      - ref: unipd
   - name: Carissa Chen
     orcid: 0000-0002-9225-7086
     email: carissayannan.chen@unipd.it
     affiliations:
       - ref: unipd
+  - name: Patrick Danaher
+    affiliations:
+      - ref: bruker
   - name: Sean Davis
     orcid: 0000-0002-8991-6458
     email: seandavi@gmail.com
@@ -65,6 +71,9 @@ author:
     email: juanhenao.sanchez@gmail.com
     affiliations:
       - ref: helmholtz
+  - name: Rafael Irizarry
+    affiliations:
+      - ref: harvard
   - name: Sviatoslav Kharuk
     orcid: 0009-0006-9901-6185
     email: sviatoslav.kharuk@embl.de
@@ -154,6 +163,8 @@ affiliations:
     name: Department of Statistics, University of California, Berkeley, CA, USA
   - id: boehringer
     name: Computational Innovation, Boehringer Ingelheim Pharma GmbH & Co. KG, Biberach, Germany
+  - id: bruker
+    name: Bruker Spatial Biology, Seattle, WA, USA
   - id: fmi
     name: Friedrich Miescher Institute for Biomedical Research, Basel, Switzerland
   - id: sib-basel
@@ -162,7 +173,7 @@ affiliations:
     name: University of Basel, Basel, Switzerland
 abstract: |
   We report the outcomes of the Bioconductor Spatial Data and Image Analysis
-  Hackathon, held in Venice, Italy in April 2026. Twenty-eight researchers and
+  Hackathon, held in Venice, Italy in April 2026. Twenty-seven researchers and
   software developers organized into four teams to advance R/Bioconductor
   capabilities for spatial omics and image analysis. Outputs include scalable
   raster–polygon workflows for whole-slide pathology, an R package for running
