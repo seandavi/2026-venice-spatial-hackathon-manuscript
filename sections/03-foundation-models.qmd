@@ -6,23 +6,25 @@ Source code: <https://github.com/drighelli/fomo>
 
 Foundation models for spatial data are predominantly distributed as Python packages, and configuring them for a particular compute environment is often fragile: most have specific version dependencies that are not always documented, even when the model is on PyPI.
 This makes individual models hard to install for many R users and makes reproducible benchmarking across models onerous.
+A second gap is representational: most Python tools expect `AnnData`, while the natural Bioconductor container for spatial data is `SpatialExperiment`, so any reusable wrapper has to reconcile the two.
 The `fomo` package addresses both problems.
 
-## Package overview
+## Methods
+
+### Package design
 
 `fomo` configures and runs foundation-model pipelines from R.
 It uses `basilisk` and `reticulate` to build separate environments per model (@fig-bfg-schema), avoiding the dependency conflicts that arise when attempting to satisfy all models in a single environment.
 The package ships a collection of `BasiliskEnvironment` schemas that pin a Python version and the required PyPI dependencies for each model.
 For models not on PyPI, `fomo` provides template scripts to build environments via `reticulate`.
 
-![Schematic of the `fomo` package.
-Input data in `SpatialExperiment` is fed to functions that set up isolated Python environments via `reticulate`, run the model, and return embeddings into the `SpatialExperiment` object.](figures/team_foundationmodels/schema.png){#fig-bfg-schema width=85%}
+![Schematic of the `fomo` package. Input data in `SpatialExperiment` is fed to functions that set up isolated Python environments via `reticulate`, run the model, and return embeddings into the `SpatialExperiment` object.](figures/team_foundationmodels/schema.png){#fig-bfg-schema width=85%}
 
 For each supported model, the package exports a `Run_<model>()` function (e.g., `Run_novae()`).
 The package focuses on **zero-shot** use of pre-trained models: input data are passed in and embeddings come back, with no fine-tuning required.
 The final design takes a `SpatialExperiment` as input and writes embeddings to its `reducedDims` slot.
 
-## Models
+### Models
 
 Six models spanning the breadth of current spatial-foundation use cases were prioritized (@tbl-bfg-models).
 Wherever possible, weights are pulled from Hugging Face so the entire workflow runs through the package; the exception is scGPT, which uses upstream PyTorch checkpoints.
@@ -38,12 +40,10 @@ Wherever possible, weights are pulled from Hugging Face so the entire workflow r
 
 : Models packaged in `fomo`. ✅ = exposed via `Run_*()`, 🟡 = environment recipe shipped but no wrapper yet, ❌ = not currently runnable through the package. {#tbl-bfg-models}
 
-### Model implementations
-
-**scGPT.** While not designed for spatial data, transcriptional profiles from spatial assays can be passed through it for comparison with spatial-specific models. (A spatial extension is available [@wang2025scgptspatial] but not yet integrated.) Our implementation uses upstream PyTorch checkpoints (`.pt` plus support `.json` files) rather than the Hugging Face port, because scGPT distributes multiple pretrained checkpoints and working with them directly preserves user choice.
+**scGPT.** Although not designed for spatial data, transcriptional profiles from spatial assays can be passed through it for comparison with spatial-specific models. (A spatial extension is available [@wang2025scgptspatial] but not yet integrated.) The implementation uses upstream PyTorch checkpoints (`.pt` plus support `.json` files) rather than the Hugging Face port, because scGPT distributes multiple pretrained checkpoints and working with them directly preserves user choice.
 `Run_scGPT()` takes the path to an `.h5ad` file and the directory containing the pretrained model.
 
-**Novae.** Embeddings are accessible from the returned `AnnData` at `adata$obsm$novae_latent`, domain assignments at `adata$obs$novae_domains_7`.
+**Novae.** Embeddings are accessible from the returned `AnnData` at `adata$obsm$novae_latent` and domain assignments at `adata$obs$novae_domains_7`.
 Novae runs on CUDA GPUs and Apple Metal Performance Shaders (MPS).
 
 **Prov-GigaPath.** Integration is in progress.
@@ -51,36 +51,14 @@ The current blocker is provisioning the Python environment on remote GPU servers
 
 **Nimbus.** Operates marker by marker across the multiplexed image, which makes it portable across multiplexed-imaging platforms with different channel counts.
 
-### Use case: KRONOS
+### `SpatialExperiment` ↔ `AnnData` conversion via `anndataR`
 
-KRONOS [@shaban2025foundation] is a foundation model purpose-built for spatial proteomics.
-It was trained on more than 47 million image patches covering 16 tissue types and 175 protein markers, and uses a Vision Transformer based on DINOv2 modified to handle highly multiplexed images.
-KRONOS extracts 384-dimensional embeddings for each patch, which can be used for cell phenotyping, artifact detection, or outcome prediction.
-
-KRONOS is not distributed as a Python package, so it does not yet fit the `BiocFoundationGPU` envelope.
-We instead explored it directly in a use case of interest.
-Starting from a multiplexed image with ~56 channels (@fig-kronos-input), we applied KRONOS to 128 × 128 sliding windows to obtain feature vectors.
-PCA of these embeddings, viewed spatially as RGB-mapped per-window boxes, immediately surfaces a clear image artifact (@fig-kronos-pca).
-
-![Original DAPI channel of the multiplexed input image.](figures/team_foundationmodels/Figure_origDapi.png){#fig-kronos-input width=70%}
-
-::: {#fig-kronos-pca}
-*Figure placeholder.* First three principal components of the KRONOS
-feature vectors, mapped to RGB and laid out in their original spatial
-positions. The pattern strongly indicates an image artifact. The original
-PNG (`features_pca.png`) lives in the Drive `team_foundationmodels/`
-folder; needs re-download — see open issue.
-:::
-
-## End-to-end compatibility with `SpatialExperiment`
-
-The package design takes a `SpatialExperiment` in and returns embeddings to the same object.
-Because most Python tools expect `AnnData`, we extended `anndataR` to support bidirectional conversion between the two formats — layering a spatially aware translation on top of the existing `SingleCellExperiment` conversion framework.
+Because most Python tools expect `AnnData`, `anndataR` was extended to support bidirectional conversion between `SpatialExperiment` and `AnnData` — layering a spatially aware translation on top of the existing `SingleCellExperiment` conversion framework.
 Canonical mappings for assays, feature- and cell-level annotations, dimensionality reductions, and graph-like pairwise structures are preserved; the new logic adds explicit handling for spatial state.
 Forward (R → Python), `spatialCoords` are serialized to `obsm["spatial"]` and image metadata from `imgData` is written to `uns["spatial"]` in a library-indexed nested layout compatible with Scanpy conventions; in reverse (Python → R), those structures are parsed to reconstruct `SpatialExperiment` objects with restored coordinates and images.
 
 The central difficulty is that `SpatialExperiment` carries semantics that are not native to `AnnData`: spatial coordinates are not generic embeddings, image metadata are heterogeneous and partially technology-specific, and multi-library datasets require deterministic reconciliation between observation-level sample annotations and image-level library identifiers.
-To address these we introduced reserved spatial keys, conflict checks against user-defined `obsm` and `uns` mappings, and a round-trip metadata container under `uns["anndataR_spatialexperiment"]` that preserves otherwise non-canonical information (original coordinate names, selected spatial keys, library identifier provenance, image export mode).
+Reserved spatial keys, conflict checks against user-defined `obsm` and `uns` mappings, and a round-trip metadata container under `uns["anndataR_spatialexperiment"]` together preserve otherwise non-canonical information (original coordinate names, selected spatial keys, library identifier provenance, image export mode).
 Image payloads can be embedded, referenced, or omitted to balance interoperability, file size, and reversibility.
 
 The current development branch can be installed with:
@@ -89,7 +67,33 @@ The current development branch can be installed with:
 remotes::install_github("drighelli/anndataR@from_as_spe")
 ```
 
-### Testing the conversion
+## Results
 
-Preliminary evaluation surfaces discrepancies in specific configurations, particularly those involving technology-specific spatial metadata or image representations.
-The reproducibility case study in the `renovae` repository (<https://github.com/sales-lab/renovae>) documents one such mismatch and will help us locate the remaining failure points before the work is upstreamed as a pull request to `anndataR`.
+This section reports two complementary results: a use case demonstrating zero-shot application of a current spatial-proteomics foundation model (KRONOS), and a status report on the `SpatialExperiment` ↔ `AnnData` conversion that underpins R-side use of all the wrapped models.
+
+### KRONOS use case
+
+KRONOS [@shaban2025foundation] is a foundation model purpose-built for spatial proteomics.
+It was trained on more than 47 million image patches covering 16 tissue types and 175 protein markers, and uses a Vision Transformer based on DINOv2 modified to handle highly multiplexed images.
+KRONOS extracts 384-dimensional embeddings for each patch, which can be used for cell phenotyping, artifact detection, or outcome prediction.
+
+Because KRONOS is not distributed as a Python package, it does not yet fit the `fomo` envelope and was instead explored directly in a use case of interest.
+Starting from a multiplexed image with ~56 channels (@fig-kronos-input), KRONOS was applied to 128 × 128 sliding windows to obtain feature vectors.
+PCA of these embeddings, viewed spatially as RGB-mapped per-window boxes, immediately surfaces a clear image artifact (@fig-kronos-pca).
+
+![Original DAPI channel of the multiplexed input image.](figures/team_foundationmodels/Figure_origDapi.png){#fig-kronos-input width=70%}
+
+::: {#fig-kronos-pca}
+*Figure placeholder.* First three principal components of the KRONOS feature vectors, mapped to RGB and laid out in their original spatial positions. The pattern strongly indicates an image artifact. The original PNG (`features_pca.png`) lives in the Drive `team_foundationmodels/` folder; needs re-download — see open issue.
+:::
+
+### Conversion testing
+
+Preliminary evaluation of the `SpatialExperiment` ↔ `AnnData` converter surfaces discrepancies in specific configurations, particularly those involving technology-specific spatial metadata or image representations.
+The reproducibility case study in the `renovae` repository (<https://github.com/sales-lab/renovae>) documents one such mismatch and helps locate the remaining failure points before the work is upstreamed as a pull request to `anndataR`.
+
+## Discussion and next steps
+
+The `fomo` envelope reduces the per-model setup burden to a package install for the models it covers, and the `anndataR` extension closes the representational gap between `SpatialExperiment` and `AnnData` for the spatial state Python tools depend on.
+Continued work falls into three areas: completing the wrappers for scFoundation and Prov-GigaPath; designing a robust pattern for models distributed outside PyPI (KRONOS in particular); and resolving the remaining `SpatialExperiment` ↔ `AnnData` round-trip discrepancies before upstreaming the converter.
+A standardized benchmarking interface across models is the natural follow-on once the wrapper set is complete.
