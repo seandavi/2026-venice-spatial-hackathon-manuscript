@@ -204,7 +204,8 @@ keywords:
 
 # Code and data availability
 
-All software developed during the hackathon is hosted in public GitHub repositories linked from the relevant team sections.
+All software developed during the hackathon is hosted in public GitHub repositories linked from the relevant team sections; those repositories remain the active development homes.
+A consolidated snapshot of the work as it stood at the close of the hackathon, organized by team into per-project folders, is also available at <https://github.com/BiocCodingCollaborations/VeniceHackathon2026>.
 
 # Author contributions
 
