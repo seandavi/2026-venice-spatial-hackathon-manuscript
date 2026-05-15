@@ -13,6 +13,7 @@ R/Bioconductor has a comparably mature suite of geostatistical and geographical 
 
 The core problem addressed here is enabling **scalable image feature extraction** in R.
 Bridging cloud-optimized image formats (Zarr) with high-performance spatial databases (GeoParquet) makes R's specialized spatial-statistics tooling available to digital-pathology workloads at whole-slide scale.
+Building on the same foundation, an interactive Shiny + Plotly workflow lets users select arbitrary regions of interest (ROIs) directly from a tissue image and feed those polygons into the same lazy subsetting pipeline.
 
 ## Methods
 
@@ -57,6 +58,12 @@ A pixel-accumulation strategy resolves this (@fig-border-effect B): when a polyg
 
 ![Schematic of the border effect and pixel-accumulation strategy. **(A)** A polygon straddles two Zarr chunks; processing one chunk at a time leaves incomplete pixel coverage. **(B)** A buffered accumulation strategy combines partial pixel sets from successive chunks before computing the final per-object statistic, without re-reading any chunk.](figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
 
+### Interactive ROI selection
+
+Building on the rasterisation primitives in `terra`, an interactive ROI-selection workflow uses `plotly` [@plotly] to let users draw arbitrary polygons over a tissue image — demonstrated here on the mouse ileum profiled by MERFISH (accessed via ExperimentHub ID `EH7543`) [@petukhovcell2022; @merfishdata] as proof of concept.
+User-drawn polygons are returned as coordinate geometries and converted into spatial vector objects.
+The ROI is then materialized through the same lazy pipeline used elsewhere in the section: transcript coordinates are filtered with out-of-memory operations in `duckspatial`, and the underlying image is cropped with `terra` and visualised with `tidyterra` [@tidyterra].
+
 ## Results
 
 ### Random access to polygon files
@@ -83,6 +90,10 @@ Combining the components above, a prototype implementation:
 
 On the example image, the analysis runs in $986 \pm 2$ seconds using R 4.5.3 on a MacBook Pro with an Apple M5 chip, 10-core CPU, 32 GB RAM, and local-SSD image data.
 The workflow reads only the relevant cell-boundary shapes and Zarr image data for each chunk, avoiding full-image materialization; loading the full image into memory on the same machine resulted in an out-of-memory error.
+
+### Interactive ROI selection in practice
+
+The Shiny + Plotly application described in Methods exposes the lazy subsetting pipeline through a point-and-click interface: an analyst draws an arbitrary polygon over a tissue image, the polygon coordinates are exported as a spatial vector object, and the underlying image and spatial-transcriptomics data are subset to that region for visualisation and downstream analysis of tissue compartments.
 
 ## Discussion and next steps
 
