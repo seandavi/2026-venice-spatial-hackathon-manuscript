@@ -69,6 +69,8 @@ remotes::install_github("drighelli/anndataR@from_as_spe")
 
 ## Results
 
+This section reports two complementary results: a use case demonstrating zero-shot application of a current spatial-proteomics foundation model (KRONOS), and a status report on the `SpatialExperiment` ↔ `AnnData` conversion that underpins R-side use of all the wrapped models.
+
 ### KRONOS use case
 
 KRONOS [@shaban2025foundation] is a foundation model purpose-built for spatial proteomics.

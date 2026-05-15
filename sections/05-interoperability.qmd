@@ -15,6 +15,9 @@ The work described here closes that gap by extending the R `SpatialData` package
 
 ## Methods
 
+The `SpatialData` family of R packages implements a faithful R-side representation of the Python `spatialdata` format and adds the lazy access patterns required to work with it at scale.
+The methods below describe the storage layers and their R readers, the companion data and visualization packages, and the lazy spatial-subsetting pattern that recurs across analyses.
+
 ### Storage layers and reader path
 
 Python's [`spatialdata`](https://spatialdata.scverse.org/en/latest/index.html) framework is a standardized format for spatial omics, storing data as `.zarr` files using an extension of the OME-NGFF specification [@marconato2024spatialdata].
@@ -47,6 +50,8 @@ Query regions can be rectangular bounding boxes or arbitrary polygons.
 This pattern is now used by the `query` method for both points and shapes in `SpatialData`.
 
 ## Results
+
+The work delivered an end-to-end interoperability demonstration that crosses the Python/R boundary on a single dataset, plus a prototype redesign of how relationships across `SpatialData` elements are encoded and explored.
 
 ### End-to-end workflow
 
