@@ -28,12 +28,17 @@ contributes:
       lof: false
       lot: false
       colorlinks: false
-      # Use a conventional centered margin instead of the PLOS reviewer-
-      # margin default (left=2.75in leaves space for line numbers and
-      # marginal notes during peer review, but reads odd in a preprint).
+      # Replace the PLOS reviewer-margin default (left=2.75in to leave room
+      # for line numbers and marginal notes) with conventional preprint
+      # geometry: 1in top/bottom, 1.5in left/right for centered text. The
+      # \fancyheadoffset/\fancyfootoffset patches in _preamble.tex align
+      # the running header/footer with this text block.
       geometry:
-        - margin=1.5in
-        - footskip=0.75in
+        - top=1in
+        - bottom=1in
+        - left=1.5in
+        - right=1.5in
+        - footskip=0.5in
       biblio-style: plos2015
       include-in-header: _preamble.tex
       template-partials:

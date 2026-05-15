@@ -62,6 +62,11 @@
 \rfoot{\thepage/\pageref{LastPage}}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrule}{\hrule height 2pt \vspace{2mm}}
-\fancyheadoffset[L]{2.25in}
-\fancyfootoffset[L]{2.25in}
+% PLOS's original geometry has left=2.75in to leave room for review
+% line numbers; the running head/foot were offset 2.25in into that
+% margin. With our symmetric preprint margins (left=1.5in) those
+% offsets pushed the footer off the page. Zero them out so the
+% header/footer sit flush with the text block.
+\fancyheadoffset[L]{0in}
+\fancyfootoffset[L]{0in}
 \lfoot{\today}
