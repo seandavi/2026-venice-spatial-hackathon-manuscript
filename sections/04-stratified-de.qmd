@@ -21,8 +21,6 @@ The full workflow chains five stages, summarized in @fig-stratified-de-pipeline:
 
 ![Spatially stratified DE pipeline. Each box corresponds to one Methods subsection below.](figures/team_analysis/stratified-de-pipeline.png){#fig-stratified-de-pipeline width=85%}
 
-*Source: [figures/team_analysis/stratified-de-pipeline.mmd](figures/team_analysis/stratified-de-pipeline.mmd). Pre-rendered to PNG; see issue #26.*
-
 ### Patch definition
 
 `getPatches()` defines patches via an iterative algorithm that incrementally adjusts patch borders to ensure adequate statistical power everywhere.

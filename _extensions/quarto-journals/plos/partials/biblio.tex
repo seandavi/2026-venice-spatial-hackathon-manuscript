@@ -1,0 +1,20 @@
+$-- Necessary content to creates the bibliography.
+$--
+$-- %%%% TODO %%%%%
+$-- Customize is needed, otherwise remove this partials to use Quarto default one
+$-- %%%%%%%%%%%%%%%%
+$if(natbib)$
+$if(biblio-title)$
+$if(has-chapters)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+$-- The original PLOS partial gates this on $if(bibliography)$, but Quarto
+$-- in cite-method=natbib mode doesn't always pass `bibliography` through to
+$-- pandoc's template variables (the .bib path is consumed by the citation
+$-- pipeline upstream). Hardcode the project's references.bib so bibtex has
+$-- a database to look up.
+\bibliography{$if(bibliography)$$for(bibliography)$$bibliography$$sep$,$endfor$$else$references.bib$endif$}
+$endif$

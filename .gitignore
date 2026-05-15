@@ -6,6 +6,10 @@ _freeze/
 *_cache/
 **/*.quarto_ipynb
 
+# Quarto format-resources are copied to the project root during render
+# (kept under _extensions/<name>/ as the source of truth).
+/plos2015.bst
+
 # Rendered outputs anywhere in the tree (commit only when explicitly intended)
 **/*.html
 **/*.pdf
@@ -36,5 +40,9 @@ _freeze/
 # Exception: the version banner is checked-in HTML source, not render output
 !_version-banner.html
 !_version-banner.html.template
+
+# Exception: Quarto extension assets (templates, BibTeX styles, partials)
+# are source files that ship with the extension, not render artifacts.
+!_extensions/**
 
 /.quarto/

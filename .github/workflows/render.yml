@@ -68,7 +68,7 @@ jobs:
           echo "Pandoc version:"
           quarto pandoc --version || true
           echo "TeX engine version:"
-          xelatex --version || pdflatex --version || true
+          lualatex --version || xelatex --version || pdflatex --version || true
           echo "Repository files:"
           ls -la
           echo "Top-level qmd/yml files:"
@@ -95,7 +95,11 @@ jobs:
           heartbeat_pid=$!
 
           echo "Starting PDF render at $(date -Iseconds)"
-          /usr/bin/time -v quarto render --to pdf --execute-debug 2>&1 | tee render-pdf.log
+          # Restrict to index.qmd: the project also contains participants.md,
+          # which has no scholarly metadata and a wide markdown table that
+          # the PLOS template doesn't handle. HTML/DOCX whole-project renders
+          # don't trip on it; PDF does.
+          /usr/bin/time -v quarto render index.qmd --to plos-pdf --execute-debug 2>&1 | tee render-pdf.log
           status=${PIPESTATUS[0]}
           echo "Finished PDF render at $(date -Iseconds)"
 
