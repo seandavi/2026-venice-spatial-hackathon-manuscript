@@ -6,30 +6,26 @@ Source code: <https://github.com/drisso/segmentation-analysis>
 
 Spatial omics and digital pathology have moved from low-plex imaging to gigapixel whole-slide datasets.
 These datasets typically pair multi-gigabyte whole-slide images (WSIs) with segmentation masks identifying hundreds of thousands to millions of nuclei or cell boundaries.
+The work reported here focuses on classical pathology images (hematoxylin and eosin, H&E), illustrated with an example from The Cancer Imaging Archive [@tcia2013ov]; the methodology generalizes to spatial transcriptomics data when H&E or immunofluorescence images accompany transcriptomic profiles, which is the case for most modern datasets.
 
-We focus on classical pathology images (hematoxylin and eosin, H&E), illustrated with an example from The Cancer Imaging Archive [@tcia2013ov].
-The methodology generalizes to spatial transcriptomics data when H&E or immunofluorescence images accompany transcriptomic profiles, which is the case for most modern datasets.
-
-The Python ecosystem offers powerful frameworks for spatial image processing, including `SpatialData` [@marconato2024spatialdata].
+The Python ecosystem offers powerful frameworks for spatial image processing, including `spatialdata` [@marconato2024spatialdata].
 R/Bioconductor has a comparably mature suite of geostatistical and geographical analysis tools — `terra`, `sf` [@pebesma2018sf], and `spatstat` [@baddeley2005spatstat] — but as image sizes and cell counts grow, R users hit a "raster–polygon bottleneck": the inability to efficiently extract image features from massive rasters and intersect them with millions of polygons without exceeding system memory.
 
-The core problem we address is enabling **scalable image feature extraction** in R.
-By bridging cloud-optimized image formats (Zarr) with high-performance spatial databases (GeoParquet), we aim to unlock R's specialized spatial statistics for the digital pathology community.
+The core problem addressed here is enabling **scalable image feature extraction** in R.
+Bridging cloud-optimized image formats (Zarr) with high-performance spatial databases (GeoParquet) makes R's specialized spatial-statistics tooling available to digital-pathology workloads at whole-slide scale.
 
 ## Methods
 
-We explored strategies for efficient reading and cropping of large OME-TIFF and Zarr images, and for subsetting large polygon collections in R.
-
-The resulting pipeline prioritizes memory efficiency by never materializing more data than needed for a single processing window.
-We use **GeoParquet** for polygon storage and **OME-Zarr** for image storage.
+The methodological work targeted efficient reading and cropping of large OME-TIFF and Zarr images, and efficient subsetting of large polygon collections in R.
+The resulting pipeline prioritizes memory efficiency by never materializing more data than needed for a single processing window, using **GeoParquet** for polygon storage and **OME-Zarr** for image storage.
 
 ### Example data
 
-As a test image we used the H&E slide `TCGA-02-0001-01Z-00-DX1.83fce43e-42ac-4dcd-b156-2908e75f2e47` from TCGA, retrieved via the `imageTCGA` Bioconductor package [@imageTCGA].
-We converted the original SVS image into OME-TIFF and OME-Zarr; the image has three channels (RGB) and 35,558 × 48,002 pixels, and the Zarr file contains 48 chunks of shape 3 × 6,688 × 6,688.
+The test image is the H&E slide `TCGA-02-0001-01Z-00-DX1.83fce43e-42ac-4dcd-b156-2908e75f2e47` from TCGA, retrieved via the `imageTCGA` Bioconductor package [@imageTCGA].
+The original SVS image was converted into OME-TIFF and OME-Zarr; it has three channels (RGB) and 35,558 × 48,002 pixels, and the Zarr file contains 48 chunks of shape 3 × 6,688 × 6,688.
 
 `imageTCGA` also provides nuclear segmentations from HoVer-Net [@graham2019hovernet].
-Polygons are originally distributed as GeoJSON; we additionally produced a GeoParquet version.
+Polygons are originally distributed as GeoJSON; a GeoParquet version was produced for this work.
 The polygon file contains 333,207 polygons, with a 2× scale factor between polygon and image coordinates (the polygons assume 40× magnification while the image is 20×).
 
 ### Technical stack
@@ -46,7 +42,7 @@ The polygon file contains 333,207 polygons, with a 2× scale factor between poly
 
 ### Algorithm
 
-Rather than iterating over polygons (the "vector-first" approach), our algorithm iterates over the **intrinsic Zarr chunks** of the image (the "raster-first" approach).
+Rather than iterating over polygons (the "vector-first" approach), the algorithm iterates over the **intrinsic Zarr chunks** of the image (the "raster-first" approach).
 For each chunk $C_{i,j}$:
 
 1. **Spatial fetch.** A SQL query is pushed to the Parquet file to retrieve
@@ -56,12 +52,10 @@ For each chunk $C_{i,j}$:
 4. **Compute.** Per-channel pixel statistics (e.g., mean intensity) are
    computed for each labeled object.
 
-**Chunk border effects.** The main difficulty is what we call the *border effect* (@fig-border-effect A): we want to read each chunk only once, but when a polygon straddles two chunks the in-memory pixel set for one chunk is incomplete.
-Our solution is a pixel accumulation strategy (@fig-border-effect B): when a polygon partially overlaps a chunk, we store the rasterized partial pixel set with the polygon's identifier; when the adjacent chunk is processed, we extend the buffer and only then compute statistics for the now-complete polygon.
+The main difficulty is the *border effect* (@fig-border-effect A): each chunk should be read only once, but when a polygon straddles two chunks the in-memory pixel set for one chunk is incomplete.
+A pixel-accumulation strategy resolves this (@fig-border-effect B): when a polygon partially overlaps a chunk, the rasterized partial pixel set is stored under the polygon's identifier; when the adjacent chunk is processed, the buffer is extended and statistics are computed only once the polygon is complete.
 
-![Schematic of the border effect and pixel-accumulation strategy.
-**(A)** A polygon straddles two Zarr chunks; processing one chunk at a time leaves incomplete pixel coverage.
-**(B)** A buffered accumulation strategy combines partial pixel sets from successive chunks before computing the final per-object statistic, without re-reading any chunk.](figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
+![Schematic of the border effect and pixel-accumulation strategy. **(A)** A polygon straddles two Zarr chunks; processing one chunk at a time leaves incomplete pixel coverage. **(B)** A buffered accumulation strategy combines partial pixel sets from successive chunks before computing the final per-object statistic, without re-reading any chunk.](figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
 
 ## Results
 
