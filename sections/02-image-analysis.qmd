@@ -63,7 +63,7 @@ Our solution is a pixel accumulation strategy (@fig-border-effect B): when a pol
 **(A)** A polygon straddles two Zarr chunks; processing one chunk at a time leaves incomplete pixel coverage.
 **(B)** A buffered accumulation strategy combines partial pixel sets from successive chunks before computing the final per-object statistic, without re-reading any chunk.](figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
 
-## Results and discussion
+## Results
 
 ### Random access to polygon files
 
@@ -74,17 +74,27 @@ While `duckspatial` works with both formats, polygon subsetting was approximatel
 
 Reading, cropping, and visualizing large OME-TIFF images is efficient using `terra`'s `rast()` and `crop()`.
 For OME-Zarr, combining `ZarrArray` subsetting with `terra::rast()` works equally well.
-We successfully visualized the intersection of high-speed polygon queries with high-resolution pathology crops (@fig-segmentation-overlay).
+The intersection of high-speed polygon queries with high-resolution pathology crops is illustrated in @fig-segmentation-overlay.
 
-![Overlay of segmentation polygons on a TCGA H&E whole-slide image crop. The visualization demonstrates the successful intersection of a lazily loaded Zarr image with polygons retrieved via spatial query from GeoParquet.](figures/team_image-analysis/ImageAnalysis-Figure2.png){#fig-segmentation-overlay width=80%}
+![Overlay of segmentation polygons on a TCGA H&E whole-slide image crop, demonstrating the intersection of a lazily loaded Zarr image with polygons retrieved via spatial query from GeoParquet.](figures/team_image-analysis/ImageAnalysis-Figure2.png){#fig-segmentation-overlay width=80%}
 
 ### Mask creation and statistics computation
 
-Combining the components above, we developed a prototype that:
+Combining the components above, a prototype implementation:
 
 - iterates over Zarr image chunks,
 - selects polygons overlapping each chunk,
 - rasterizes them into an image mask, and
 - computes mean per-channel pixel intensity over each segmented object.
 
-On the example image, this analysis runs in in $986 \pm 2$ seconds using R 4.5.3 on a MacBook Pro with an Apple M5 chip, 10-core CPU, 32 GB RAM, and local-SSD image data. The workflow reads only the relevant cell-boundary shapes and Zarr image data for each chunk, avoiding full-image materialization. Loading the full image into memory on the same machine resulted in an out-of-memory error. The current prototype skips polygons that overlap multiple chunks, sidestepping the border effect; full accumulation is the natural next step.
+On the example image, the analysis runs in $986 \pm 2$ seconds using R 4.5.3 on a MacBook Pro with an Apple M5 chip, 10-core CPU, 32 GB RAM, and local-SSD image data.
+The workflow reads only the relevant cell-boundary shapes and Zarr image data for each chunk, avoiding full-image materialization; loading the full image into memory on the same machine resulted in an out-of-memory error.
+
+## Discussion and next steps
+
+The combination of OME-Zarr image storage, GeoParquet polygon storage, and DuckDB spatial queries makes whole-slide pathology analysis tractable in R on commodity hardware, without rewriting the underlying spatial-statistics tooling.
+Pushing predicates into chunked, indexed storage rather than loading data into R is the central design choice, and the same pattern recurs across the other hackathon teams.
+
+The current prototype skips polygons that straddle multiple chunks, sidestepping the border effect described in @fig-border-effect.
+Implementing the full pixel-accumulation strategy is the natural next step.
+Additional priorities are packaging the chunk-iteration loop into reusable utilities, validating performance on larger and more diverse datasets, and integrating the workflow with downstream Bioconductor packages for cell-level analysis.
