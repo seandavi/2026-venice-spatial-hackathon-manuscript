@@ -37,4 +37,8 @@ _freeze/
 !_version-banner.html
 !_version-banner.html.template
 
+# Exception: Quarto extension assets (templates, BibTeX styles, partials)
+# are source files that ship with the extension, not render artifacts.
+!_extensions/**
+
 /.quarto/

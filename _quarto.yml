@@ -17,16 +17,16 @@ format:
     number-sections: true
     theme: cosmo
     embed-resources: true
-  pdf:
-    documentclass: article
-    papersize: letter
-    geometry:
-      - margin=1in
-    toc: false
+  plos-pdf:
+    # Single-column PDF for bioRxiv submission. The PLOS template provides
+    # structured author rendering (numbered affiliations, * marker for
+    # corresponding authors, numbered citation style). The PLOS extension's
+    # pdf-engine has been patched from pdflatex to lualatex in
+    # _extensions/quarto-journals/plos/_extension.yml so the UTF-8 status
+    # emojis in section 03's models table compile.
+    journal:
+      id: plosone
     number-sections: true
-    colorlinks: true
-    fig-pos: "H"
-    keep-tex: true
   docx:
     toc: false
     number-sections: true
