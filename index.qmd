@@ -46,6 +46,7 @@ author:
     email: seandavi@gmail.com
     affiliations:
       - ref: anschutz
+    corresponding: true
   - name: Martin Emons
     orcid: 0009-0000-5219-5311
     email: martin.emons@uzh.ch
