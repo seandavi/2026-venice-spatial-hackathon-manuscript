@@ -6,6 +6,10 @@ _freeze/
 *_cache/
 **/*.quarto_ipynb
 
+# Quarto format-resources are copied to the project root during render
+# (kept under _extensions/<name>/ as the source of truth).
+/plos2015.bst
+
 # Rendered outputs anywhere in the tree (commit only when explicitly intended)
 **/*.html
 **/*.pdf
