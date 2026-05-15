@@ -83,9 +83,7 @@ PCA of these embeddings, viewed spatially as RGB-mapped per-window boxes, immedi
 
 ![Original DAPI channel of the multiplexed input image.](figures/team_foundationmodels/Figure_origDapi.png){#fig-kronos-input width=70%}
 
-::: {#fig-kronos-pca}
-*Figure placeholder.* First three principal components of the KRONOS feature vectors, mapped to RGB and laid out in their original spatial positions. The pattern strongly indicates an image artifact. The original PNG (`features_pca.png`) lives in the Drive `team_foundationmodels/` folder; needs re-download — see open issue.
-:::
+![First three principal components of the KRONOS feature vectors, mapped to RGB and laid out in their original spatial positions. The pattern strongly indicates an image artifact.](figures/team_foundationmodels/features_pca.png){#fig-kronos-pca width=70%}
 
 ### Conversion testing
 
