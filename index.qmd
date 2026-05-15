@@ -217,4 +217,5 @@ The authors reviewed all AI output and retain full responsibility for the manusc
 
 # Acknowledgements
 
-We thank the hackathon hosts and sponsors for making this event possible.
+The event was organized by the Department of Statistical Sciences of the University of Padova in collaboration with Venice International University. It was funded in part by the European Research Council (ERC) Grant CoG 101171662 and supported by EMBL’s Transversal Theme Theory@EMBL.
+We thank Elena Guzzonato for her help with the organization of the event.
