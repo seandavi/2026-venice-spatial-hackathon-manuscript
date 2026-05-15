@@ -208,6 +208,7 @@ All software developed during the hackathon is hosted in public GitHub repositor
 # Author contributions
 
 H.C., L.M., W.H., and D.R. organized and led the hackathon.
+S.D. coordinated the production of the preprint manuscript.
 All authors participated in one or more team projects and contributed to the manuscript.
 
 # Use of AI tools
@@ -219,3 +220,4 @@ The authors reviewed all AI output and retain full responsibility for the manusc
 
 The event was organized by the Department of Statistical Sciences of the University of Padova in collaboration with Venice International University. It was funded in part by the European Research Council (ERC) Grant CoG 101171662 and supported by EMBL’s Transversal Theme Theory@EMBL.
 We thank Elena Guzzonato for her help with the organization of the event.
+S.D. acknowledges support from NCI U24CA289073.
