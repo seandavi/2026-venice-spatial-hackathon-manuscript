@@ -27,7 +27,13 @@ contributes:
       toc: false
       lof: false
       lot: false
-      colorlinks: false
+      # PLOS originally sets colorlinks=false (their journals print B&W).
+      # For an online preprint, blue URLs and citations are clearer;
+      # internal cross-refs stay black so the body text doesn't look busy.
+      colorlinks: true
+      urlcolor: blue
+      citecolor: blue
+      linkcolor: black
       # Replace the PLOS reviewer-margin default (left=2.75in to leave room
       # for line numbers and marginal notes) with conventional 1in margins
       # all around. Wide tables benefit from the extra horizontal room.
