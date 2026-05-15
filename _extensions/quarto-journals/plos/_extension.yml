@@ -29,15 +29,12 @@ contributes:
       lot: false
       colorlinks: false
       # Replace the PLOS reviewer-margin default (left=2.75in to leave room
-      # for line numbers and marginal notes) with conventional preprint
-      # geometry: 1in top/bottom, 1.5in left/right for centered text. The
-      # \fancyheadoffset/\fancyfootoffset patches in _preamble.tex align
-      # the running header/footer with this text block.
+      # for line numbers and marginal notes) with conventional 1in margins
+      # all around. Wide tables benefit from the extra horizontal room.
+      # The \fancyheadoffset/\fancyfootoffset patches in _preamble.tex
+      # align the running header/footer with this text block.
       geometry:
-        - top=1in
-        - bottom=1in
-        - left=1.5in
-        - right=1.5in
+        - margin=1in
         - footskip=0.5in
       biblio-style: plos2015
       include-in-header: _preamble.tex

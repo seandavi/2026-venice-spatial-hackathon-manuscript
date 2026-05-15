@@ -1,3 +1,11 @@
+% UTF-8 status emoji used in the section 03 models table — lualatex
+% compiles them but most fonts don't ship glyphs, so they render blank.
+% Map them to math symbols that the body font does have.
+\usepackage{newunicodechar}
+\newunicodechar{✅}{\ensuremath{\checkmark}}
+\newunicodechar{❌}{\ensuremath{\times}}
+\newunicodechar{🟡}{\ensuremath{\circ}}
+
 % Use adjustwidth environment to exceed column width (see example table in text)
 \usepackage{changepage}
 

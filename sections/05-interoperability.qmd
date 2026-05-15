@@ -28,8 +28,6 @@ The R [`SpatialData`](https://github.com/HelenaLC/SpatialData) package provides 
 
 ![Storage and reader path for each `SpatialData` element type. Images and labels are `.zarr`-backed; points and shapes are `.parquet`-backed; tables are read from `AnnData`/`.zarr`.](figures/team_interoperability/spatialdata-layers.png){#fig-spatialdata-layers width=85%}
 
-*Source: [figures/team_interoperability/spatialdata-layers.mmd](figures/team_interoperability/spatialdata-layers.mmd). Pre-rendered to PNG; see issue #26.*
-
 Because tabular information lands in `SingleCellExperiment`, interoperability with Bioconductor's existing single-cell infrastructure is preserved.
 The on-disk representations of the other components support efficient lazy access via `Rarr` and `duckspatial`.
 Available functionality includes spatial queries by rectangular bounding box or polygon, and masking between elements to aggregate information across layers.
