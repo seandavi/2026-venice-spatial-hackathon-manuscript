@@ -51,7 +51,7 @@ This pattern is now used by the `query` method for both points and shapes in `Sp
 ### End-to-end workflow
 
 To demonstrate the current capabilities and interoperability with existing R/Bioconductor tools, an end-to-end workflow was built that reads results from [`SegTraQ`](https://github.com/LazDaria/SegTraQ) — a Python framework for cell segmentation and transcript-assignment QC — into R, applies two downstream analyses (RCTD-based signal purity scoring via [`spacexr`](https://bioconductor.org/packages//release/bioc/html/spacexr.html) [@cable2022rctd] and delineation of multicellular anatomical structures via [`sosta`](https://bioconductor.org/packages//release/bioc/html/sosta.html) [@sosta2025]), and visualizes the results spatially with `SpatialData.plot`.
-The full workflow — read Python-generated SpatialData, compute QC scores and anatomical structures, visualize subsets — is summarized in @fig-spatialdata-overview, with image-specific visualization shown in @fig-spatialdataplot-images.
+The full workflow — read data written by Python's `spatialdata`, compute QC scores and anatomical structures, visualize subsets — is summarized in @fig-spatialdata-overview, with image-specific visualization shown in @fig-spatialdataplot-images.
 An R Markdown source plus rendered HTML is published at <https://github.com/HelenaLC/VeniceInterop>.
 
 ::: {#fig-spatialdata-overview}
