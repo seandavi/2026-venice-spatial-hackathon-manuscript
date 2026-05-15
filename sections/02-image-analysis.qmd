@@ -14,7 +14,9 @@ The Python ecosystem offers powerful frameworks for spatial image processing, in
 R/Bioconductor has a comparably mature suite of geostatistical and geographical analysis tools — `terra`, `sf` [@pebesma2018sf], and `spatstat` [@baddeley2005spatstat] — but as image sizes and cell counts grow, R users hit a "raster–polygon bottleneck": the inability to efficiently extract image features from massive rasters and intersect them with millions of polygons without exceeding system memory.
 
 The core problem we address is enabling **scalable image feature extraction** in R.
-By bridging cloud-optimized image formats (Zarr) with high-performance spatial databases (GeoParquet), we aim to unlock R's specialized spatial statistics for the digital pathology community.
+By bridging cloud-optimized image formats (Zarr) with high-performance spatial databases (GeoParquet), we aim to unlock R's specialized spatial statistics for the digital pathology community. 
+
+We additionally demonstrate the use of these scalable geostatistical tools with R's shiny framework for interactive extraction of regions of interest (ROIs), enabling researchers to efficiently select biologically meaningful tissue areas for downstream spatial analysis.
 
 ## Methods
 
@@ -63,6 +65,10 @@ Our solution is a pixel accumulation strategy (@fig-border-effect B): when a pol
 **(A)** A polygon straddles two Zarr chunks; processing one chunk at a time leaves incomplete pixel coverage.
 **(B)** A buffered accumulation strategy combines partial pixel sets from successive chunks before computing the final per-object statistic, without re-reading any chunk.](figures/team_image-analysis/ImageAnalysis-Figure1.png){#fig-border-effect width=80%}
 
+### Interactive polygon selection and visualisation
+
+Using efficient rasterisation with the `terra` package, we further show the capabilities of `plotly`[@plotly] to perform interactive ROI selection on a typical biological tissue image, such as the mouse ileum profiled by MERFISH (accessed via ExperimentHub ID:EH7543)[@petukhovcell2022; @merfishdata] as proof-of-concept. User-defined polygons were returned as coordinate geometries and converted into spatial vector objects. To subset the ROI, transcript coordinates were filtered using out-of-memory operations implemented in `duckspatial` and the image was subsequently cropped using `terra` and visualised using `tidyterra`[@tidyterra].
+
 ## Results and discussion
 
 ### Random access to polygon files
@@ -88,3 +94,7 @@ Combining the components above, we developed a prototype that:
 - computes mean per-channel pixel intensity over each segmented object.
 
 On the example image, this analysis runs in in $986 \pm 2$ seconds using R 4.5.3 on a MacBook Pro with an Apple M5 chip, 10-core CPU, 32 GB RAM, and local-SSD image data. The workflow reads only the relevant cell-boundary shapes and Zarr image data for each chunk, avoiding full-image materialization. Loading the full image into memory on the same machine resulted in an out-of-memory error. The current prototype skips polygons that overlap multiple chunks, sidestepping the border effect; full accumulation is the natural next step.
+
+### Interactive polygon selection function
+
+An interactive shiny application was constructed, leveraging in-built `plotly` functionality to implement an adaptable function that enables users to interactively select an ROI of varying shapes, export the polygon coordinates, and subsequently subset the image and spatial transcriptomic data with the polygon geometries. This enables region-specific visualisation of the image data and downstream spatial analysis of tissue compartments.
