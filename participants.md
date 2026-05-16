@@ -15,6 +15,7 @@
 | Hugo | | Gruson | hugo.gruson@embl.de | 0000-0002-4094-1476 | European Molecular Biology Laboratory, Heidelberg | |
 | Samuel | | Gunz | samuel.gunz@uzh.ch | 0000-0002-8909-0932 | University of Zurich and Swiss Institute of Bioinformatics, Zurich, Switzerland | |
 | Juan | | Henao | juanhenao.sanchez@gmail.com | 0000-0003-0783-1432 | Computational Health Center, Helmholtz Munich, 85764 Neuherberg, Germany | |
+| Wolfgang | | Huber |  |  | European Molecular Biology Laboratory, Heidelberg, Germany | |
 | Rafael | | Irizarry |  |  | Harvard T.H. Chan School of Public Health, Boston, MA, USA | |
 | Sviatoslav | | Kharuk | sviatoslav.kharuk@embl.de | 0009-0006-9901-6185 | European Molecular Biology Laboratory, Heidelberg | |
 | Daria | | Lazic | daria.lazic@embl.de | 0000-0002-8793-6885 | European Molecular Biology Laboratory, Heidelberg | |
