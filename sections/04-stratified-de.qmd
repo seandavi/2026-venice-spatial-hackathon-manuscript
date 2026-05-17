@@ -17,7 +17,7 @@ Individual patches may be underpowered, so a spatially smoothed meta-analysis re
 
 ## Methods
 
-The full workflow chains five stages, summarized in @fig-stratified-de-pipeline: patches are defined from cell coordinates and the design variable; per-patch DE is run via OLS; each patch is described by a "spatial-context" feature vector; per-patch results are stabilized by meta-analysis across nearest neighbors in that feature space; and the resulting patch × gene matrix is the substrate for downstream biological exploration.
+The full workflow chains five stages, summarized in @fig-stratified-de-pipeline: patches are defined from cell coordinates and the design variable; per-patch DE is run via ordinary least squares (OLS); each patch is described by a "spatial-context" feature vector; per-patch results are stabilized by meta-analysis across nearest neighbors in that feature space; and the resulting patch × gene matrix is the substrate for downstream biological exploration.
 
 ![Spatially stratified DE pipeline. Each box corresponds to one Methods subsection below.](figures/team_analysis/stratified-de-pipeline.png){#fig-stratified-de-pipeline width=85%}
 
