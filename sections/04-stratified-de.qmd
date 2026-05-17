@@ -17,7 +17,7 @@ Individual patches may be underpowered, so a spatially smoothed meta-analysis re
 
 ## Methods
 
-The full workflow chains five stages, summarized in @fig-stratified-de-pipeline: patches are defined from cell coordinates and the design variable; per-patch DE is run via Pearson residuals + simultaneous OLS; each patch is described by a "spatial-context" feature vector; per-patch results are stabilized by meta-analysis across nearest neighbors in that feature space; and the resulting patch × gene matrix is the substrate for downstream biological exploration.
+The full workflow chains five stages, summarized in @fig-stratified-de-pipeline: patches are defined from cell coordinates and the design variable; per-patch DE is run via OLS; each patch is described by a "spatial-context" feature vector; per-patch results are stabilized by meta-analysis across nearest neighbors in that feature space; and the resulting patch × gene matrix is the substrate for downstream biological exploration.
 
 ![Spatially stratified DE pipeline. Each box corresponds to one Methods subsection below.](figures/team_analysis/stratified-de-pipeline.png){#fig-stratified-de-pipeline width=85%}
 
@@ -33,9 +33,7 @@ The resulting patches are more internally homogeneous (they do not span domains)
 
 ### Stratified DE
 
-For each patch, `patchDE()` performs two steps.
-First, raw counts are transformed to Pearson residuals on the fly (a tissue-wide residual matrix would typically be too large to materialize).
-Second, `hastyDE()` performs OLS for all genes via a single matrix multiplication, producing complete per-patch DE results in seconds.
+For each patch, `patchDE()` performs OLS for all genes via a single matrix multiplication, producing complete per-patch DE results in seconds.
 This efficiency matters: a typical study might involve >18,000 genes and >1,000 patches.
 
 ### Characterizing patches
