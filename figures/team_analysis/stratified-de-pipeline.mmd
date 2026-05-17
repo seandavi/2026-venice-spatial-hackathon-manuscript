@@ -1,6 +1,6 @@
 flowchart LR
   A["Cell coords +<br/>design variable"] --> B["getPatches:<br/>iterative borders"]
-  B --> C["patchDE:<br/>Pearson resid + OLS"]
+  B --> C["patchDE:<br/>OLS"]
   C --> D["Patch characteristics<br/>(expression / cell type / FM emb)"]
   D --> E["Subgroup meta-analysis<br/>K nearest neighbors"]
   E --> F[("Per-patch DE matrix<br/>(patches × genes)")]
