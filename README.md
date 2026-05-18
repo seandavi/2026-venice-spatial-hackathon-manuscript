@@ -146,3 +146,15 @@ Author order follows the manuscript byline convention:
 Affiliations are referenced by ID in the `index.qmd` frontmatter so that
 each unique institution is listed once. The full participant roster with
 ORCIDs, affiliations, and COI declarations is in [`participants.md`](participants.md).
+
+## Drafting tools
+
+This preprint was drafted collaboratively with help from
+[quartobot](https://github.com/quartobot/quartobot), a small Quarto
+companion CLI. quartobot ships an MCP server that exposes its
+DOI / PMID / arXiv citation resolver to coding agents, which made it
+straightforward to look up references and extend `references.bib`
+inline while writing — without round-tripping through Crossref or
+PubMed by hand. The render pipeline itself is plain Quarto; nothing in
+this repo requires quartobot to build. See the manuscript's
+[Use of AI tools](index.qmd) section for the broader acknowledgment.
