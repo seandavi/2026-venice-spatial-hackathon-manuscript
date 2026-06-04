@@ -56,10 +56,10 @@ authors:
   - name: Daria Lazic
     orcid: 0000-0002-8793-6885
     affiliation: 2
-  - name: Artür Manukyan
+  - name: Artr Manukyan
     orcid: 0000-0002-0441-9517
     affiliation: 11
-  - name: Pere Moles-Seró
+  - name: Pere Moles-Ser
     orcid: 0009-0009-4408-1897
     affiliation: 6
   - name: Elizabeth Purdom
@@ -86,7 +86,7 @@ authors:
     orcid: 0000-0001-8508-5012
     affiliation: 4
 affiliations:
-  - name: Centro Nacional de Análisis Genómico, Barcelona, Spain
+  - name: Centro Nacional de Anlisis Genmico, Barcelona, Spain
     index: 1
   - name: European Molecular Biology Laboratory, Heidelberg, Germany
     index: 2
@@ -106,7 +106,7 @@ affiliations:
     index: 9
   - name: Computational Health Center, Helmholtz Munich, Neuherberg, Germany
     index: 10
-  - name: Max Delbrück Center for Molecular Medicine, Berlin, Germany
+  - name: Max Delbrck Center for Molecular Medicine, Berlin, Germany
     index: 11
   - name: Department of Statistics, University of California, Berkeley, CA, USA
     index: 12
@@ -199,13 +199,13 @@ drafts before departing.
 Participants self-organized into four teams:
 
 1.  Image and segmentation data manipulation and visualization
-    ([Section 2](#sec-image-analysis){.quarto-xref})
+    ([Section2](#sec-image-analysis){.quarto-xref})
 2.  Spatial foundation models for the Bioconductor community
-    ([Section 3](#sec-foundation-models){.quarto-xref})
+    ([Section3](#sec-foundation-models){.quarto-xref})
 3.  Spatially stratified differential expression analysis
-    ([Section 4](#sec-stratified-de){.quarto-xref})
+    ([Section4](#sec-stratified-de){.quarto-xref})
 4.  Enhanced infrastructure and interoperability for spatial data in
-    Bioconductor ([Section 5](#sec-interoperability){.quarto-xref})
+    Bioconductor ([Section5](#sec-interoperability){.quarto-xref})
 
 The remainder of this manuscript reports each team's work in a common
 four-part structure --- motivation, methods, results, and discussion and
@@ -260,14 +260,14 @@ The test image is the H&E slide
 `TCGA-02-0001-01Z-00-DX1.83fce43e-42ac-4dcd-b156-2908e75f2e47` from
 TCGA, retrieved via the `imageTCGA` Bioconductor package^5^. The
 original SVS image was converted into OME-TIFF and OME-Zarr; it has
-three channels (RGB) and 35,558 × 48,002 pixels, and the Zarr file
-contains 48 chunks of shape 3 × 6,688 × 6,688.
+three channels (RGB) and 35,558  48,002 pixels, and the Zarr file
+contains 48 chunks of shape 3  6,688  6,688.
 
 `imageTCGA` also provides nuclear segmentations from HoVer-Net^6^.
 Polygons are originally distributed as GeoJSON; a GeoParquet version was
 produced for this work. The polygon file contains 333,207 polygons, with
-a 2× scale factor between polygon and image coordinates (the polygons
-assume 40× magnification while the image is 20×).
+a 2 scale factor between polygon and image coordinates (the polygons
+assume 40 magnification while the image is 20).
 
 ### Technical stack
 
@@ -326,10 +326,10 @@ algorithm iterates over the **intrinsic Zarr chunks** of the image (the
     computed for each labeled object.
 
 The main difficulty is the *border effect*
-([Figure 1](#fig-border-effect){.quarto-xref} A): each chunk should be
+([Figure1](#fig-border-effect){.quarto-xref} A): each chunk should be
 read only once, but when a polygon straddles two chunks the in-memory
 pixel set for one chunk is incomplete. A pixel-accumulation strategy
-resolves this ([Figure 1](#fig-border-effect){.quarto-xref} B): when a
+resolves this ([Figure1](#fig-border-effect){.quarto-xref} B): when a
 polygon partially overlaps a chunk, the rasterized partial pixel set is
 stored under the polygon's identifier; when the adjacent chunk is
 processed, the buffer is extended and statistics are computed only once
@@ -357,7 +357,7 @@ operations in `duckspatial`, and the underlying image is cropped with
 Pushing spatial queries to an out-of-memory Parquet file substantially
 outperforms traditional GeoJSON-based workflows, enabling whole-slide
 analyses on standard workstations. While `duckspatial` works with both
-formats, polygon subsetting was approximately 50× faster on GeoParquet
+formats, polygon subsetting was approximately 50 faster on GeoParquet
 than on GeoJSON.
 
 ### Cropping and visualization of large images
@@ -367,7 +367,7 @@ using `terra`'s `rast()` and `crop()`. For OME-Zarr, combining
 `ZarrArray` subsetting with `terra::rast()` works equally well. The
 intersection of high-speed polygon queries with high-resolution
 pathology crops is illustrated in
-[Figure 2](#fig-segmentation-overlay){.quarto-xref}.
+[Figure2](#fig-segmentation-overlay){.quarto-xref}.
 
 ![](figures/team_image-analysis/ImageAnalysis-Figure2.png){width="80%"}
 
@@ -407,7 +407,7 @@ and the same pattern recurs across the other hackathon teams.
 
 The current prototype skips polygons that straddle multiple chunks,
 sidestepping the border effect described in
-[Figure 1](#fig-border-effect){.quarto-xref}. Implementing the full
+[Figure1](#fig-border-effect){.quarto-xref}. Implementing the full
 pixel-accumulation strategy is the natural next step. Additional
 priorities are packaging the chunk-iteration loop into reusable
 utilities, validating performance on larger and more diverse datasets,
@@ -437,7 +437,7 @@ both problems.
 
 `fomo` configures and runs foundation-model pipelines from R. It uses
 `basilisk` and `reticulate` to build separate environments per model
-([Figure 3](#fig-bfg-schema){.quarto-xref}), avoiding the dependency
+([Figure3](#fig-bfg-schema){.quarto-xref}), avoiding the dependency
 conflicts that arise when attempting to satisfy all models in a single
 environment. The package ships a collection of `BasiliskEnvironment`
 schemas that pin a Python version and the required PyPI dependencies for
@@ -456,7 +456,7 @@ slot.
 ### Models
 
 Six models spanning the breadth of current spatial-foundation use cases
-were prioritized ([Table 3](#tbl-bfg-models){.quarto-xref}). Wherever
+were prioritized ([Table3](#tbl-bfg-models){.quarto-xref}). Wherever
 possible, weights are pulled from Hugging Face so the entire workflow
 runs through the package; the exception is scGPT, which uses upstream
 PyTorch checkpoints.
@@ -464,25 +464,25 @@ PyTorch checkpoints.
   -----------------------------------------------------------------------------------------------------------
    Status  Model               Category           PyPI  Primary input    Output             Embedding size
   -------- ------------------- ----------------- ------ ---------------- ------------------ -----------------
-     ✅    scGPT^15^           Single-cell         ✅   Gene counts      Cell embeddings    512
+         scGPT^15^           Single-cell            Gene counts      Cell embeddings    512
                                transcriptomics                                              
 
-     🟡    scFoundation^16^    Single-cell         ✅   Gene counts      Gene / cell        3072
+         scFoundation^16^    Single-cell            Gene counts      Gene / cell        3072
                                transcriptomics                           embeddings         
 
-     ✅    Novae^17^           Spatial             ✅   Gene counts +    Neighbor-context   64
+         Novae^17^           Spatial                Gene counts +    Neighbor-context   64
                                transcriptomics          spatial coords   embedding +        
                                                                          zero-shot domains  
 
-     🟡    Prov-GigaPath^18^   H&E imaging         ❌   H&E WSI tiles    Tile / slide       tile 1536, slide
+         Prov-GigaPath^18^   H&E imaging            H&E WSI tiles    Tile / slide       tile 1536, slide
                                                                          embeddings         768
 
-     ✅    Nimbus^19^          Spatial             ✅   Multiplex TIFF + Per-cell           ---
+         Nimbus^19^          Spatial                Multiplex TIFF + Per-cell           ---
                                proteomics               segmentation     expression         
                                                         mask             estimates and      
                                                                          annotations        
 
-     ❌    KRONOS^20^          Spatial             ❌   TIFF + mask +    Per-patch          384
+         KRONOS^20^          Spatial                TIFF + mask +    Per-patch          384
                                proteomics               marker           embeddings         
                                                         annotation                          
   -----------------------------------------------------------------------------------------------------------
@@ -511,7 +511,7 @@ setting is still being worked out.
 which makes it portable across multiplexed-imaging platforms with
 different channel counts.
 
-### `SpatialExperiment` ↔ `AnnData` conversion via `anndataR`
+### `SpatialExperiment`  `AnnData` conversion via `anndataR`
 
 Because most Python tools expect `AnnData`, `anndataR` was extended to
 support bidirectional conversion between `SpatialExperiment` and
@@ -519,10 +519,10 @@ support bidirectional conversion between `SpatialExperiment` and
 existing `SingleCellExperiment` conversion framework. Canonical mappings
 for assays, feature- and cell-level annotations, dimensionality
 reductions, and graph-like pairwise structures are preserved; the new
-logic adds explicit handling for spatial state. Forward (R → Python),
+logic adds explicit handling for spatial state. Forward (R  Python),
 `spatialCoords` are serialized to `obsm["spatial"]` and image metadata
 from `imgData` is written to `uns["spatial"]` in a library-indexed
-nested layout compatible with Scanpy conventions; in reverse (Python →
+nested layout compatible with Scanpy conventions; in reverse (Python 
 R), those structures are parsed to reconstruct `SpatialExperiment`
 objects with restored coordinates and images.
 
@@ -549,7 +549,7 @@ remotes::install_github("drighelli/anndataR@from_as_spe")
 
 This section reports two complementary results: a use case demonstrating
 zero-shot application of a current spatial-proteomics foundation model
-(KRONOS), and a status report on the `SpatialExperiment` ↔ `AnnData`
+(KRONOS), and a status report on the `SpatialExperiment`  `AnnData`
 conversion that underpins R-side use of all the wrapped models.
 
 ### KRONOS use case
@@ -564,11 +564,11 @@ phenotyping, artifact detection, or outcome prediction.
 Because KRONOS is not distributed as a Python package, it does not yet
 fit the `fomo` envelope and was instead explored directly in a use case
 of interest. Starting from a multiplexed image with \~56 channels
-([Figure 4](#fig-kronos-input){.quarto-xref}), KRONOS was applied to 128
-× 128 sliding windows to obtain feature vectors. PCA of these
+([Figure4](#fig-kronos-input){.quarto-xref}), KRONOS was applied to 128
+ 128 sliding windows to obtain feature vectors. PCA of these
 embeddings, viewed spatially as RGB-mapped per-window boxes, immediately
 surfaces a clear image artifact
-([Figure 5](#fig-kronos-pca){.quarto-xref}).
+([Figure5](#fig-kronos-pca){.quarto-xref}).
 
 ![](figures/team_foundationmodels/Figure_origDapi.png){width="70%"}
 
@@ -576,7 +576,7 @@ surfaces a clear image artifact
 
 ### Conversion testing
 
-Preliminary evaluation of the `SpatialExperiment` ↔ `AnnData` converter
+Preliminary evaluation of the `SpatialExperiment`  `AnnData` converter
 surfaces discrepancies in specific configurations, particularly those
 involving technology-specific spatial metadata or image representations.
 The reproducibility case study in the `renovae` repository
@@ -592,7 +592,7 @@ the representational gap between `SpatialExperiment` and `AnnData` for
 the spatial state Python tools depend on. Continued work falls into
 three areas: completing the wrappers for scFoundation and Prov-GigaPath;
 designing a robust pattern for models distributed outside PyPI (KRONOS
-in particular); and resolving the remaining `SpatialExperiment` ↔
+in particular); and resolving the remaining `SpatialExperiment` 
 `AnnData` round-trip discrepancies before upstreaming the converter. A
 standardized benchmarking interface across models is the natural
 follow-on once the wrapper set is complete.
@@ -631,12 +631,12 @@ regaining statistical power lost to fine-grained stratification.
 ## Methods
 
 The full workflow chains five stages, summarized in
-[Figure 6](#fig-stratified-de-pipeline){.quarto-xref}: patches are
+[Figure6](#fig-stratified-de-pipeline){.quarto-xref}: patches are
 defined from cell coordinates and the design variable; per-patch DE is
 run via ordinary least squares (OLS); each patch is described by a
 "spatial-context" feature vector; per-patch results are stabilized by
 meta-analysis across nearest neighbors in that feature space; and the
-resulting patch × gene matrix is the substrate for downstream biological
+resulting patch  gene matrix is the substrate for downstream biological
 exploration.
 
 ![](figures/team_analysis/stratified-de-pipeline.png){width="85%"}
@@ -695,7 +695,7 @@ precise, more confident regional estimate.
 
 ### Pursuing biological understanding
 
-The output is a matrix of DE results for all patches × genes, which is
+The output is a matrix of DE results for all patches  genes, which is
 rich but daunting. The intended downstream analyses include subgroup
 analyses (drawn from clinical-trial methodology) that surface
 well-characterized regions where a gene's DE signal is strongest or
@@ -717,7 +717,7 @@ patterns.
 
 ### Iterative algorithm yields patches with reasonable power
 
-[Figure 7](#fig-getpatches-power){.quarto-xref} shows the improvement of
+[Figure7](#fig-getpatches-power){.quarto-xref} shows the improvement of
 patch power over iterations of `getPatches()` on epithelial cells of the
 mouse colon MERFISH dataset^22^. Top panels show patch footprints at the
 first and final iterations; bottom panels show each patch's sum of
@@ -728,7 +728,7 @@ power.
 
 ### Smoothed patch meta-analysis improves statistical power
 
-[Figure 8](#fig-meta-analysis){.quarto-xref} compares per-patch DE
+[Figure8](#fig-meta-analysis){.quarto-xref} compares per-patch DE
 results before and after meta-analysis in the colon-cancer sample
 dataset^23^. Left: $t$-statistics from single-patch DE on a single gene.
 Right: $z$-statistics from meta-analysis on each patch's 15 most
@@ -749,7 +749,7 @@ correction work when neighborhoods overlap? The methodological roadmap
 centers on these issues alongside more practical refinements:
 recommendations and utility functions for defining patch
 characteristics, vignettes for interpreting subgroup results, an
-accounting for non-independence among patches (cf. the `metapod`
+accounting for non-independence among patches (cf.the `metapod`
 package), an alternative formulation in which a patch's neighbors serve
 as a prior that the patch's own data updates, and clustering of genes
 and patches by per-patch DE profile.
@@ -885,9 +885,9 @@ and delineation of multicellular anatomical structures via
 and visualizes the results spatially with `SpatialData.plot`. The full
 workflow --- read data written by Python's `spatialdata`, compute QC
 scores and anatomical structures, visualize subsets --- is summarized in
-[Figure 10](#fig-spatialdata-overview){.quarto-xref}, with
+[Figure10](#fig-spatialdata-overview){.quarto-xref}, with
 image-specific visualization shown in
-[Figure 11](#fig-spatialdataplot-images){.quarto-xref}. An R Markdown
+[Figure11](#fig-spatialdataplot-images){.quarto-xref}. An R Markdown
 source plus rendered HTML is published at
 <https://github.com/HelenaLC/VeniceInterop>.
 
@@ -985,9 +985,9 @@ manuscript.
 Claude (Anthropic, model `claude-opus-4-7`) was used to convert
 team-authored Google Docs into this Quarto project, scaffold the CI/CD
 workflow, and propose structural edits --- including the table in
-[Table 2](#tbl-image-stack){.quarto-xref} and the diagrams in
-[Figure 9](#fig-spatialdata-layers){.quarto-xref} and
-[Figure 6](#fig-stratified-de-pipeline){.quarto-xref}. The authors
+[Table2](#tbl-image-stack){.quarto-xref} and the diagrams in
+[Figure9](#fig-spatialdata-layers){.quarto-xref} and
+[Figure6](#fig-stratified-de-pipeline){.quarto-xref}. The authors
 reviewed all AI output and retain full responsibility for the
 manuscript's content.
 
@@ -1051,20 +1051,20 @@ doi:[10.32614/CRAN.package.terra](https://doi.org/10.32614/CRAN.package.terra).]
 :::
 
 ::: {#ref-duckspatial .csl-entry}
-[8. ]{.csl-left-margin}[Cidre González, A., Kotov, E. & Pereira, R. H.
+[8. ]{.csl-left-margin}[Cidre Gonzlez, A., Kotov, E. & Pereira, R. H.
 M. *[duckspatial]{.nocase}: R Interface to 'DuckDB' Database with
 Spatial Extension*. (2026).
 doi:[10.32614/CRAN.package.duckspatial](https://doi.org/10.32614/CRAN.package.duckspatial).]{.csl-right-inline}
 :::
 
 ::: {#ref-zarrarray .csl-entry}
-[9. ]{.csl-left-margin}[Pagès, H., Smith, M., Gruson, H. & Manukyan, A.
+[9. ]{.csl-left-margin}[Pags, H., Smith, M., Gruson, H. & Manukyan, A.
 *ZarrArray: Bring Zarr Datasets in R as DelayedArray Objects*. (2026).
 doi:[10.18129/B9.bioc.ZarrArray](https://doi.org/10.18129/B9.bioc.ZarrArray).]{.csl-right-inline}
 :::
 
 ::: {#ref-delayedarray .csl-entry}
-[10. ]{.csl-left-margin}[Pagès, H. *DelayedArray: A Unified Framework
+[10. ]{.csl-left-margin}[Pags, H. *DelayedArray: A Unified Framework
 for Working Transparently with on-Disk and in-Memory Array-Like
 Datasets*. (2026).
 doi:[10.18129/B9.bioc.DelayedArray](https://doi.org/10.18129/B9.bioc.DelayedArray).]{.csl-right-inline}
@@ -1091,7 +1091,7 @@ Biotechnology* vol. 40 345--354 (2022).]{.csl-right-inline}
 :::
 
 ::: {#ref-tidyterra .csl-entry}
-[14. ]{.csl-left-margin}[Hernangómez, D. *[Using the Tidyverse with
+[14. ]{.csl-left-margin}[Hernangmez, D. *[Using the Tidyverse with
 Terra Objects: The Tidyterra
 Package](https://doi.org/10.21105/joss.05751)*. *Journal of Open Source
 Software* vol. 8 5751 (2023).]{.csl-right-inline}
@@ -1112,7 +1112,7 @@ Methods* **21**, 1481--1491 (2024).]{.csl-right-inline}
 :::
 
 ::: {#ref-blampey2024novae .csl-entry}
-[17. ]{.csl-left-margin}[Quentin, B., Hakim, B., Nadège, B., Fabrice, A.
+[17. ]{.csl-left-margin}[Quentin, B., Hakim, B., Nadge, B., Fabrice, A.
 & Paul-Henry, C. Novae: A graph-based foundation model for spatial
 transcriptomics data. *bioRxiv*
 <https://doi.org/10.1101/2024.09.09.612009> (2024)
