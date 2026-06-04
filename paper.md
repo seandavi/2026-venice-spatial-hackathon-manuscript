@@ -1,4 +1,134 @@
 ---
+title: 'Bioconductor Spatial Data and Image Analysis Hackathon'
+title_short: 'Bioconductor Spatial Hackathon, Venice 2026'
+tags:
+  - Bioconductor
+  - spatial omics
+  - image analysis
+  - foundation models
+  - SpatialData
+authors:
+  - name: Helena Crowell
+    orcid: 0000-0002-4801-1767
+    affiliation: 1
+  - name: Luca Marconato
+    orcid: 0000-0003-3198-1326
+    affiliation: "2, 3"
+  - name: Ilaria Billato
+    orcid: 0000-0002-3335-3254
+    affiliation: 4
+  - name: Matteo Calgaro
+    orcid: 0000-0002-3056-518X
+    affiliation: 4
+  - name: Robert Castelo
+    orcid: 0000-0003-2229-4508
+    affiliation: 6
+  - name: Riccardo Ceccaroni
+    affiliation: 4
+  - name: Carissa Chen
+    orcid: 0000-0002-9225-7086
+    affiliation: 4
+  - name: Patrick Danaher
+    affiliation: 14
+  - name: Sean Davis
+    orcid: 0000-0002-8991-6458
+    affiliation: 7
+  - name: Martin Emons
+    orcid: 0009-0000-5219-5311
+    affiliation: 8
+  - name: Gabriel Grajeda
+    orcid: 0009-0003-7242-7476
+    affiliation: 9
+  - name: Hugo Gruson
+    orcid: 0000-0002-4094-1476
+    affiliation: 2
+  - name: Samuel Gunz
+    orcid: 0000-0002-8909-0932
+    affiliation: 8
+  - name: Juan Henao
+    orcid: 0000-0003-0783-1432
+    affiliation: 10
+  - name: Rafael Irizarry
+    affiliation: 9
+  - name: Sviatoslav Kharuk
+    orcid: 0009-0006-9901-6185
+    affiliation: 2
+  - name: Daria Lazic
+    orcid: 0000-0002-8793-6885
+    affiliation: 2
+  - name: Artür Manukyan
+    orcid: 0000-0002-0441-9517
+    affiliation: 11
+  - name: Pere Moles-Seró
+    orcid: 0009-0009-4408-1897
+    affiliation: 6
+  - name: Elizabeth Purdom
+    orcid: 0000-0001-9455-7990
+    affiliation: 12
+  - name: Dario Righelli
+    orcid: 0000-0003-1504-3583
+    affiliation: 5
+  - name: Gabriele Sales
+    orcid: 0000-0003-2078-5661
+    affiliation: 4
+  - name: Mike L. Smith
+    orcid: 0000-0002-7800-3848
+    affiliation: 13
+  - name: Charlotte Soneson
+    orcid: 0000-0003-3833-2169
+    affiliation: "15, 16"
+  - name: Michael B. Stadler
+    orcid: 0000-0002-2269-4934
+    affiliation: "15, 16, 17"
+  - name: Wolfgang Huber
+    affiliation: 2
+  - name: Davide Risso
+    orcid: 0000-0001-8508-5012
+    affiliation: 4
+affiliations:
+  - name: Centro Nacional de Análisis Genómico, Barcelona, Spain
+    index: 1
+  - name: European Molecular Biology Laboratory, Heidelberg, Germany
+    index: 2
+  - name: German Cancer Research Center (DKFZ), Heidelberg, Germany
+    index: 3
+  - name: University of Padova, Padova, Italy
+    index: 4
+  - name: Department of Biology (DiBio), University of Padova, Padova, Italy
+    index: 5
+  - name: Universitat Pompeu Fabra, Barcelona, Spain
+    index: 6
+  - name: University of Colorado Anschutz School of Medicine, Aurora, CO, USA
+    index: 7
+  - name: University of Zurich and Swiss Institute of Bioinformatics, Zurich, Switzerland
+    index: 8
+  - name: Harvard T.H. Chan School of Public Health, Boston, MA, USA
+    index: 9
+  - name: Computational Health Center, Helmholtz Munich, Neuherberg, Germany
+    index: 10
+  - name: Max Delbrück Center for Molecular Medicine, Berlin, Germany
+    index: 11
+  - name: Department of Statistics, University of California, Berkeley, CA, USA
+    index: 12
+  - name: Computational Innovation, Boehringer Ingelheim Pharma GmbH & Co. KG, Biberach, Germany
+    index: 13
+  - name: Bruker Spatial Biology, Seattle, WA, USA
+    index: 14
+  - name: Friedrich Miescher Institute for Biomedical Research, Basel, Switzerland
+    index: 15
+  - name: SIB Swiss Institute of Bioinformatics, Basel, Switzerland
+    index: 16
+  - name: University of Basel, Basel, Switzerland
+    index: 17
+date: 4 June 2026
+cito-bibliography: references.bib
+event: VeniceSpatial2026
+biohackathon_name: "Hackathon on Spatial Omics and Image-Derived Data"
+biohackathon_url: "https://www.stat.unipd.it/en/hackathon-spatial-omics-and-image-derived-data-venice"
+biohackathon_location: "Venice, Italy, 2026"
+group: Bioconductor
+git_url: https://github.com/BiocCodingCollaborations/VeniceHackathon2026
+authors_short: Helena Crowell \emph{et al.}
 abstract: |
   We report the outcomes of the Bioconductor Spatial Data and Image
   Analysis Hackathon, held in Venice, Italy in April 2026. Twenty-seven
@@ -11,226 +141,6 @@ abstract: |
   `SpatialData` infrastructure for interoperability with the Python
   `spatialdata` ecosystem. All software is openly available and under
   active development.
-affiliations:
-- id: cnag
-  name: Centro Nacional de Análisis Genómico, Barcelona, Spain
-- id: embl
-  name: European Molecular Biology Laboratory, Heidelberg, Germany
-- id: dkfz
-  name: German Cancer Research Center (DKFZ), Heidelberg, Germany
-- id: unipd
-  name: University of Padova, Padova, Italy
-- id: unipd-dibio
-  name: Department of Biology (DiBio), University of Padova, Padova,
-    Italy
-- id: upf
-  name: Universitat Pompeu Fabra, Barcelona, Spain
-- id: anschutz
-  name: University of Colorado Anschutz School of Medicine, Aurora, CO,
-    USA
-- id: uzh-sib
-  name: University of Zurich and Swiss Institute of Bioinformatics,
-    Zurich, Switzerland
-- id: harvard
-  name: Harvard T.H. Chan School of Public Health, Boston, MA, USA
-- id: helmholtz
-  name: Computational Health Center, Helmholtz Munich, Neuherberg,
-    Germany
-- id: mdc
-  name: Max Delbrück Center for Molecular Medicine, Berlin, Germany
-- id: berkeley
-  name: Department of Statistics, University of California, Berkeley,
-    CA, USA
-- id: boehringer
-  name: Computational Innovation, Boehringer Ingelheim Pharma GmbH &
-    Co. KG, Biberach, Germany
-- id: bruker
-  name: Bruker Spatial Biology, Seattle, WA, USA
-- id: fmi
-  name: Friedrich Miescher Institute for Biomedical Research, Basel,
-    Switzerland
-- id: sib-basel
-  name: SIB Swiss Institute of Bioinformatics, Basel, Switzerland
-- id: unibasel
-  name: University of Basel, Basel, Switzerland
-author:
-- Helena Crowell
-- Luca Marconato
-- Ilaria Billato
-- Matteo Calgaro
-- Robert Castelo
-- Riccardo Ceccaroni
-- Carissa Chen
-- Patrick Danaher
-- Sean Davis
-- Martin Emons
-- Gabriel Grajeda
-- Hugo Gruson
-- Samuel Gunz
-- Juan Henao
-- Rafael Irizarry
-- Sviatoslav Kharuk
-- Daria Lazic
-- Artür Manukyan
-- Pere Moles-Seró
-- Elizabeth Purdom
-- Dario Righelli
-- Gabriele Sales
-- Mike L. Smith
-- Charlotte Soneson
-- Michael B. Stadler
-- Wolfgang Huber
-- Davide Risso
-authors:
-- affiliations:
-  - ref: cnag
-  corresponding: true
-  email: helena@crowell.eu
-  name: Helena Crowell
-  orcid: 0000-0002-4801-1767
-- affiliations:
-  - ref: embl
-  - ref: dkfz
-  email: luca.marconato@embl.de
-  name: Luca Marconato
-  orcid: 0000-0003-3198-1326
-- affiliations:
-  - ref: unipd
-  email: ilaria.billato@unipd.it
-  name: Ilaria Billato
-  orcid: 0000-0002-3335-3254
-- affiliations:
-  - ref: unipd
-  email: matteo.calgaro@unipd.it
-  name: Matteo Calgaro
-  orcid: 0000-0002-3056-518X
-- affiliations:
-  - ref: upf
-  email: robert.castelo@upf.edu
-  name: Robert Castelo
-  orcid: 0000-0003-2229-4508
-- affiliations:
-  - ref: unipd
-  name: Riccardo Ceccaroni
-- affiliations:
-  - ref: unipd
-  email: carissayannan.chen@unipd.it
-  name: Carissa Chen
-  orcid: 0000-0002-9225-7086
-- affiliations:
-  - ref: bruker
-  name: Patrick Danaher
-- affiliations:
-  - ref: anschutz
-  corresponding: true
-  email: seandavi@gmail.com
-  name: Sean Davis
-  orcid: 0000-0002-8991-6458
-- affiliations:
-  - ref: uzh-sib
-  email: martin.emons@uzh.ch
-  name: Martin Emons
-  orcid: 0009-0000-5219-5311
-- affiliations:
-  - ref: harvard
-  email: ggrajeda@g.harvard.edu
-  name: Gabriel Grajeda
-  orcid: 0009-0003-7242-7476
-- affiliations:
-  - ref: embl
-  email: hugo.gruson@embl.de
-  name: Hugo Gruson
-  orcid: 0000-0002-4094-1476
-- affiliations:
-  - ref: uzh-sib
-  email: samuel.gunz@uzh.ch
-  name: Samuel Gunz
-  orcid: 0000-0002-8909-0932
-- affiliations:
-  - ref: helmholtz
-  email: juanhenao.sanchez@gmail.com
-  name: Juan Henao
-  orcid: 0000-0003-0783-1432
-- affiliations:
-  - ref: harvard
-  name: Rafael Irizarry
-- affiliations:
-  - ref: embl
-  email: sviatoslav.kharuk@embl.de
-  name: Sviatoslav Kharuk
-  orcid: 0009-0006-9901-6185
-- affiliations:
-  - ref: embl
-  email: daria.lazic@embl.de
-  name: Daria Lazic
-  orcid: 0000-0002-8793-6885
-- affiliations:
-  - ref: mdc
-  email: artur-man@hotmail.com
-  name: Artür Manukyan
-  orcid: 0000-0002-0441-9517
-- affiliations:
-  - ref: upf
-  email: pere.moles@upf.edu
-  name: Pere Moles-Seró
-  orcid: 0009-0009-4408-1897
-- affiliations:
-  - ref: berkeley
-  email: epurdom@stat.berkeley.edu
-  name: Elizabeth Purdom
-  orcid: 0000-0001-9455-7990
-- affiliations:
-  - ref: unipd-dibio
-  email: dario.righelli@unipd.it
-  name: Dario Righelli
-  orcid: 0000-0003-1504-3583
-- affiliations:
-  - ref: unipd
-  email: gabriele.sales@unipd.it
-  name: Gabriele Sales
-  orcid: 0000-0003-2078-5661
-- affiliations:
-  - ref: boehringer
-  email: grimbough@gmail.com
-  name: Mike L. Smith
-  orcid: 0000-0002-7800-3848
-- affiliations:
-  - ref: fmi
-  - ref: sib-basel
-  email: charlotte.soneson@fmi.ch
-  name: Charlotte Soneson
-  orcid: 0000-0003-3833-2169
-- affiliations:
-  - ref: fmi
-  - ref: sib-basel
-  - ref: unibasel
-  email: michael.stadler@fmi.ch
-  name: Michael B. Stadler
-  orcid: 0000-0002-2269-4934
-- affiliations:
-  - ref: embl
-  name: Wolfgang Huber
-- affiliations:
-  - ref: unipd
-  corresponding: true
-  email: davide.risso@unipd.it
-  name: Davide Risso
-  orcid: 0000-0001-8508-5012
-bibliography:
-- references.bib
-csl: "https://raw.githubusercontent.com/citation-style-language/styles/master/nature.csl"
-date: 2026-06-04
-engines:
-- path: /Applications/quarto/share/extension-subtrees/julia-engine/\_extensions/julia-engine/julia-engine.js
-keywords:
-- Bioconductor
-- spatial omics
-- image analysis
-- foundation models
-- SpatialData
-subtitle: Venice, April 2026
-title: Bioconductor Spatial Data and Image Analysis Hackathon
-toc-title: Table of contents
 ---
 
 # Introduction
