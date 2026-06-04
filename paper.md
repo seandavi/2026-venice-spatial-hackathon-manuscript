@@ -122,6 +122,7 @@ affiliations:
     index: 17
 date: 4 June 2026
 cito-bibliography: references.bib
+citation_package: natbib
 event: VeniceSpatial2026
 biohackathon_name: "Hackathon on Spatial Omics and Image-Derived Data"
 biohackathon_url: "https://www.stat.unipd.it/en/hackathon-spatial-omics-and-image-derived-data-venice"
