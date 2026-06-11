@@ -1009,14 +1009,14 @@ fund of Silicon Valley Community Foundation.
 ::: {#ref-tcia2013ov .csl-entry}
 [1. ]{.csl-left-margin}[The Cancer Imaging Archive. The cancer genome
 atlas ovarian cancer collection (TCGA-OV). (2013)
-doi:[10.7937/K9/TCIA.2013.V7FRLZ1D](https://doi.org/10.7937/K9/TCIA.2013.V7FRLZ1D).]{.csl-right-inline}
+[doi:10.7937/K9/TCIA.2013.V7FRLZ1D](https://doi.org/10.7937/K9/TCIA.2013.V7FRLZ1D).]{.csl-right-inline}
 :::
 
 ::: {#ref-marconato2024spatialdata .csl-entry}
 [2. ]{.csl-left-margin}[[Marconato, L. *et al.*]{.nocase} SpatialData:
 An open and universal data framework for spatial omics. *Nature Methods*
 <https://doi.org/10.1038/s41592-024-02212-x> (2024)
-doi:[10.1038/s41592-024-02212-x](https://doi.org/10.1038/s41592-024-02212-x).]{.csl-right-inline}
+[doi:10.1038/s41592-024-02212-x](https://doi.org/10.1038/s41592-024-02212-x).]{.csl-right-inline}
 :::
 
 ::: {#ref-pebesma2018sf .csl-entry}
@@ -1035,7 +1035,7 @@ Statistical Software* **12**, (2005).]{.csl-right-inline}
 ::: {#ref-imageTCGA .csl-entry}
 [5. ]{.csl-left-margin}[Billato, I. *[imageTCGA]{.nocase}: TCGA
 Diagnostic Image Database Explorer*. (2026).
-doi:[10.18129/B9.bioc.imageTCGA](https://doi.org/10.18129/B9.bioc.imageTCGA).]{.csl-right-inline}
+[doi:10.18129/B9.bioc.imageTCGA](https://doi.org/10.18129/B9.bioc.imageTCGA).]{.csl-right-inline}
 :::
 
 ::: {#ref-graham2019hovernet .csl-entry}
@@ -1048,27 +1048,27 @@ Analysis* **58**, 101563 (2019).]{.csl-right-inline}
 ::: {#ref-terra .csl-entry}
 [7. ]{.csl-left-margin}[Hijmans, R. J., Brown, A. & Barbosa, M.
 *[terra]{.nocase}: Spatial Data Analysis*. (2026).
-doi:[10.32614/CRAN.package.terra](https://doi.org/10.32614/CRAN.package.terra).]{.csl-right-inline}
+[doi:10.32614/CRAN.package.terra](https://doi.org/10.32614/CRAN.package.terra).]{.csl-right-inline}
 :::
 
 ::: {#ref-duckspatial .csl-entry}
 [8. ]{.csl-left-margin}[Cidre Gonzlez, A., Kotov, E. & Pereira, R. H.
 M. *[duckspatial]{.nocase}: R Interface to 'DuckDB' Database with
 Spatial Extension*. (2026).
-doi:[10.32614/CRAN.package.duckspatial](https://doi.org/10.32614/CRAN.package.duckspatial).]{.csl-right-inline}
+[doi:10.32614/CRAN.package.duckspatial](https://doi.org/10.32614/CRAN.package.duckspatial).]{.csl-right-inline}
 :::
 
 ::: {#ref-zarrarray .csl-entry}
 [9. ]{.csl-left-margin}[Pags, H., Smith, M., Gruson, H. & Manukyan, A.
 *ZarrArray: Bring Zarr Datasets in R as DelayedArray Objects*. (2026).
-doi:[10.18129/B9.bioc.ZarrArray](https://doi.org/10.18129/B9.bioc.ZarrArray).]{.csl-right-inline}
+[doi:10.18129/B9.bioc.ZarrArray](https://doi.org/10.18129/B9.bioc.ZarrArray).]{.csl-right-inline}
 :::
 
 ::: {#ref-delayedarray .csl-entry}
 [10. ]{.csl-left-margin}[Pags, H. *DelayedArray: A Unified Framework
 for Working Transparently with on-Disk and in-Memory Array-Like
 Datasets*. (2026).
-doi:[10.18129/B9.bioc.DelayedArray](https://doi.org/10.18129/B9.bioc.DelayedArray).]{.csl-right-inline}
+[doi:10.18129/B9.bioc.DelayedArray](https://doi.org/10.18129/B9.bioc.DelayedArray).]{.csl-right-inline}
 :::
 
 ::: {#ref-plotly .csl-entry}
@@ -1117,7 +1117,7 @@ Methods* **21**, 1481--1491 (2024).]{.csl-right-inline}
 & Paul-Henry, C. Novae: A graph-based foundation model for spatial
 transcriptomics data. *bioRxiv*
 <https://doi.org/10.1101/2024.09.09.612009> (2024)
-doi:[10.1101/2024.09.09.612009](https://doi.org/10.1101/2024.09.09.612009).]{.csl-right-inline}
+[doi:10.1101/2024.09.09.612009](https://doi.org/10.1101/2024.09.09.612009).]{.csl-right-inline}
 :::
 
 ::: {#ref-xu2024gigapath .csl-entry}
@@ -1156,14 +1156,14 @@ spatial remodeling](https://doi.org/10.1016/j.cell.2024.03.013). *Cell*
 [23. ]{.csl-left-margin}[Crowell, H. L. *et al.* Tracing colorectal
 malignancy transformation from cell to tissue scale. *bioRxiv*
 2025.06.23.660674 (2025)
-doi:[10.1101/2025.06.23.660674](https://doi.org/10.1101/2025.06.23.660674).]{.csl-right-inline}
+[doi:10.1101/2025.06.23.660674](https://doi.org/10.1101/2025.06.23.660674).]{.csl-right-inline}
 :::
 
 ::: {#ref-anndataR2025 .csl-entry}
 [24. ]{.csl-left-margin}[Deconinck, L. *et al.* [anndataR]{.nocase}
 improves interoperability between R and Python in single-cell
 transcriptomics. *bioRxiv* 2025.08.18.669052 (2025)
-doi:[10.1101/2025.08.18.669052](https://doi.org/10.1101/2025.08.18.669052).]{.csl-right-inline}
+[doi:10.1101/2025.08.18.669052](https://doi.org/10.1101/2025.08.18.669052).]{.csl-right-inline}
 :::
 
 ::: {#ref-cable2022rctd .csl-entry}
@@ -1178,12 +1178,12 @@ Biotechnology* **40**, 517--526 (2022).]{.csl-right-inline}
 Analysis of multicellular anatomical structures from spatial omics data
 using [sosta]{.nocase}. *bioRxiv*
 <https://doi.org/10.1101/2025.10.13.682065> (2025)
-doi:[10.1101/2025.10.13.682065](https://doi.org/10.1101/2025.10.13.682065).]{.csl-right-inline}
+[doi:10.1101/2025.10.13.682065](https://doi.org/10.1101/2025.10.13.682065).]{.csl-right-inline}
 :::
 
 ::: {#ref-spatialdataR2024 .csl-entry}
 [27. ]{.csl-left-margin}[Marconato, L. *et al.* 1st SpatialData
 developer workshop. <https://doi.org/10.37044/osf.io/8ck3e> (2024)
-doi:[10.37044/osf.io/8ck3e](https://doi.org/10.37044/osf.io/8ck3e).]{.csl-right-inline}
+[doi:10.37044/osf.io/8ck3e](https://doi.org/10.37044/osf.io/8ck3e).]{.csl-right-inline}
 :::
 ::::::::::::::::::::::::::::::
